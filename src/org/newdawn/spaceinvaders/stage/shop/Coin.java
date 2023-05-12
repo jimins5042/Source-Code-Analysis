@@ -1,8 +1,7 @@
 package org.newdawn.spaceinvaders.stage.shop;
 
 public class Coin {
-    //테스트용으로 50원 넣어놨음
-    //private int coin = 50;
+    //초기 코인은 50원 넣어놨음
     private static int coin = 50;
 
     public static int getCoin() {

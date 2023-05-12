@@ -16,7 +16,6 @@ public class StageLevel {
 
     //등장하는 적의 수 조절
     private int level[] = {1, 2, 1, 2, 1};
-    //private float changeFiringInterval = 500;
     private static float changeFiringInterval = 500;
 
     //적이 내려오는 속도 조절
@@ -24,15 +23,13 @@ public class StageLevel {
 
     //스테이지 단계
     private static int currentLevel = 0;
-
+    private static float slowInvaderSpeed = 1L;
     public int[] getLevel() {
         return level;
     }
 
     //적 하강속도 비율
-    private static float slowInvaderSpeed = 1L;
 
-    //private static HashMap<String, String> mem = new HashMap<>();
 
     public static float getSlowInvaderSpeed() {
         return slowInvaderSpeed;

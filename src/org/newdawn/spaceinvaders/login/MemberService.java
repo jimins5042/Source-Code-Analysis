@@ -83,7 +83,7 @@ public class MemberService extends JFrame {
             /*
             이상하다... 해쉬맵에 값은 잘 저장되어 있는데 왜 출력은 하나만 되는 것인가...
              */
-            for(Long key : list.keySet()){
+            for (Long key : list.keySet()) {
                 System.out.println("key = " + key + " name = " + list.get(key).getName());
             }
 
@@ -98,7 +98,7 @@ public class MemberService extends JFrame {
         getContentPane().add(goMenu, gbc[4]);
         goMenu.addActionListener(e -> {
             dispose();
-            new Menu();
+            new LoginService();
             setVisible(false);
         });
 
@@ -107,6 +107,7 @@ public class MemberService extends JFrame {
 
     }
 
+    //회원가입 로직
     class SignUpListener implements ActionListener {
         JFrame frame;
 
@@ -118,17 +119,25 @@ public class MemberService extends JFrame {
         public void actionPerformed(ActionEvent arg0) {
             //버튼을 누르면 이쪽으로 이동
             System.out.println(arg0.getActionCommand());
-            //String memId = id.getText();
-            System.out.println("id: " + id.getText());
-            //String memPassword = password.getText();
-            System.out.println("password: " + password.getText());
 
-            //HashMap에 데이터를 {아이디 : 비밀번호} 형식으로 저장
-            memberRepository.save(id.getText(), password.getText());
-            //회원목록을 출력하기 위해 {회원번호 : Member 객체} 형식으로 저장
+            if (id.getText() == null) {
+                JOptionPane.showMessageDialog(frame, "아이디는 비어있을 수 없습니다.");
+            } else {
 
-            //다이얼로그
-            JOptionPane.showMessageDialog(frame, "환영합니다, " + member.getName() + "님.");
+                System.out.println("id: " + id.getText());
+                System.out.println("password: " + password.getText());
+
+                //HashMap에 데이터를 {아이디 : 비밀번호} 형식으로 저장
+                memberRepository.save(id.getText(), password.getText());
+
+                //다이얼로그
+                JOptionPane.showMessageDialog(frame, "회원가입을 환영합니다, " + member.getName() + "님.");
+
+                dispose();
+                new LoginService();
+                setVisible(false);
+            }
+
         }
     }
 

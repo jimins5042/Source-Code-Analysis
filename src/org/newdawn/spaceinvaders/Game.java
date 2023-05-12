@@ -5,6 +5,9 @@ import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
 import org.newdawn.spaceinvaders.jdbcdb.ConnectDB;
+import org.newdawn.spaceinvaders.jdbcdb.GameInfo;
+import org.newdawn.spaceinvaders.login.LoginService;
+import org.newdawn.spaceinvaders.login.Member;
 import org.newdawn.spaceinvaders.stage.StageLevel;
 import org.newdawn.spaceinvaders.stage.shop.Coin;
 
@@ -93,6 +96,7 @@ public class Game extends Canvas {
      * True if we are firing
      */
     private boolean firePressed = false;
+
     /**
      * True if game logic needs to be applied this loop, normally as a result of a game event
      */
@@ -123,6 +127,8 @@ public class Game extends Canvas {
     int currentLevel = stageLevel.getCurrentLevel();
     protected Sound gameSound = new Sound();
     Coin coin = new Coin();
+    Member member = new Member();
+    GameInfo info = new GameInfo();
 
 
     /**
@@ -139,6 +145,7 @@ public class Game extends Canvas {
 
         // setup our canvas size and put it into the content of the frame
         setBounds(0, 0, 800, 600);
+
         panel.add(this);
 
         // Tell AWT not to bother repainting our canvas since we're
@@ -260,6 +267,7 @@ public class Game extends Canvas {
      * Notification that the player has died.
      */
     public void notifyDeath() {
+        save();
         message = "Oh no! They got you, try again?";
         waitingForKeyPress = true;
     }
@@ -278,24 +286,46 @@ public class Game extends Canvas {
     스테이지 레벨이 5 이하일 경우, 총 플레이시간을 더한 후 다음 스테이지 정보를 보여줌
 
      */
-    public void notifyWin(int playTime, int stage, int killCount) {
+    public void notifyWin() {
         message = "Well done! You Win!";
+        save();
+
+        //플레이 시간 및 삽입하는 임시코드
+
+    }
+
+    public void save() {
+        sumTime = (sum / 1000) + sumTime;
+        info.setPlayTime((int) sumTime);
+        info.setKillCount(killAlien);
+        //스테이지는 stageLevel.getCurrentLevel 에서 관리
 
         if (currentLevel == 5) {
+           /*
             db.setConnection();
-            db.insertResult(playTime, stage, killCount);
+            db.insertResult();
             db.currentRecord();
+           */
+
+            System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : $s",
+                    info.getPlayTime(), stageLevel.getCurrentLevel(),
+                    info.getKillCount(), coin.getCoin(),
+                    member.getName(), member.getPassword());
+
+
             message = "게임이 끝났습니다! 당신의 기록을 확인하세요!";
             gameRunning = false;
 
         } else {
 
-            sumTime = playTime + sumTime;
-            message = "next stage = " + (currentLevel + 1) + "플레이시간: " + sumTime;
+            System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : $s \n",
+                    info.getPlayTime(), stageLevel.getCurrentLevel(),
+                    info.getKillCount(), coin.getCoin(),
+                    member.getLoginName(), member.getLoginPassword());
+            message = "next stage = " + (currentLevel + 1) + " 플레이시간: " + sumTime;
             waitingForKeyPress = true;
 
         }
-        //플레이 시간 및 삽입하는 임시코드
 
     }
 
@@ -303,7 +333,7 @@ public class Game extends Canvas {
      * Notification that an alien has been killed
      */
 
-    int killAlien = 0;
+    int killAlien = info.getKillCount();
 
     public void notifyAlienKilled() {
         // reduce the alient count, if there are none left, the player has won!
@@ -325,7 +355,7 @@ public class Game extends Canvas {
             stageLevel.setAlienY(i);
 
             System.out.println("스테이지 레벨 증가. 현재 레벨: " + (currentLevel + 1) + " 적 속도 증가 : " + stageLevel.getAlienY());
-            notifyWin((int) sum / 1000, 1, killAlien);
+            notifyWin();
 
         }
 
@@ -377,7 +407,7 @@ public class Game extends Canvas {
      * <p>
      */
     long sum = 0;
-    long sumTime = 0;
+    long sumTime = info.getPlayTime();
 
     public void gameLoop() {
         long lastLoopTime = SystemTimer.getTime();
@@ -397,6 +427,7 @@ public class Game extends Canvas {
             ship = new ShipEntity(this, "sprites/character3.png", 370, 550);
             entities.add(ship);
         }
+
 
         long a = 0;
 
@@ -428,9 +459,14 @@ public class Game extends Canvas {
 
             // cycle round asking each entity to move itself
             if (!waitingForKeyPress) {
+
+                //info.setKillCount(killAlien);
+
                 //현재 정보 표시 코드
                 message = "킬카운트: " + killAlien + "    스테이지: " + (currentLevel + 1)
-                        + "    현재 시간: " + ((int) sum / 1000) + "초 " + "coin: " + coin.getCoin();
+                        + "    현재 시간: " + ((int) sum / 1000) + "초 " + "coin: " + coin.getCoin() + " " + member.getLoginName();
+
+
                 g.setColor(Color.white);
                 g.drawString(message, (800 - g.getFontMetrics().stringWidth(message)) / 16, 40);
                 for (int i = 0; i < entities.size(); i++) {
@@ -565,6 +601,14 @@ public class Game extends Canvas {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 firePressed = true;
             }
+
+            if (e.getKeyCode() == KeyEvent.VK_M) {
+                System.out.println("m 눌림");
+                container.dispose();
+                new Menu();
+                setVisible(false);
+            }
+
         }
 
         /**
@@ -588,6 +632,7 @@ public class Game extends Canvas {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 firePressed = false;
             }
+
         }
 
         /**

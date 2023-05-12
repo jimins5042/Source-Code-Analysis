@@ -1,14 +1,20 @@
 package org.newdawn.spaceinvaders;
 
+import org.newdawn.spaceinvaders.login.LoginService;
+import org.newdawn.spaceinvaders.login.Member;
 import org.newdawn.spaceinvaders.login.MemberService;
+import org.newdawn.spaceinvaders.stage.StageLevel;
 import org.newdawn.spaceinvaders.stage.shop.Coin;
 
 import org.newdawn.spaceinvaders.stage.shop.Shop;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Menu extends JFrame {
+
     private JButton playgameButton;
     private JButton twoPlayergameButton;
     private JButton newgameButton;
@@ -17,7 +23,9 @@ public class Menu extends JFrame {
 
     private JButton signUp;
     private JButton exitButton;
-    private static int BUTTON_SIZE = 8;
+
+    private JButton signIn;
+    private static int BUTTON_SIZE = 9;
     Coin coin = new Coin();
 
     public Menu() {
@@ -43,12 +51,23 @@ public class Menu extends JFrame {
         gbc[1].gridy = 1;
         getContentPane().add(playgameButton, gbc[1]);
         playgameButton.addActionListener(e -> {
-            Thread thread = new Thread(() -> {
-                Game game = new Game();
-                setVisible(false);
-                game.gameLoop();
-            });
-            thread.start();
+            Member member = new Member();
+            StageLevel level = new StageLevel();
+            JFrame frame = new JFrame();
+            if (!member.isLoginCookie()) {
+
+                JOptionPane.showMessageDialog(frame, "저장된 기록이 없습니다. 로그인 해주세요.");
+            } else if (level.getCurrentLevel() == 0) {
+                JOptionPane.showMessageDialog(frame, "저장된 기록이 없습니다. new game을 시작해주세요.");
+            } else {
+                Thread thread = new Thread(() -> {
+
+                    Game game = new Game();
+                    setVisible(false);
+                    game.gameLoop();
+                });
+                thread.start();
+            }
         });
 
         twoPlayergameButton = new JButton("2playergame");
@@ -73,9 +92,9 @@ public class Menu extends JFrame {
         gbc[3].gridx = 1;
         gbc[3].gridy = 3;
         getContentPane().add(newgameButton, gbc[3]);
-        newgameButton.addActionListener(e -> {
-            System.exit(0); // 지금은 나가기, 이후 newgame
-        });
+
+        newgameButton.addActionListener(new Menu.NewGameListener(this));
+
 
         shipSelectButton = new JButton("shipselect");
         shipSelectButton.setBounds(350, 400, 200, 50);
@@ -109,7 +128,8 @@ public class Menu extends JFrame {
             thread.start();
         });
 
-        signUp = new JButton("Sign up");
+
+        signUp = new JButton("Sign In/Sign up");
         signUp.setBounds(350, 450, 200, 50);
         gbc[6] = new GridBagConstraints();
         gbc[6].gridx = 1;
@@ -118,7 +138,7 @@ public class Menu extends JFrame {
         signUp.addActionListener(e -> {
             Thread thread = new Thread(() -> {
                 dispose();
-                new MemberService();
+                new LoginService();
                 setVisible(false);
             });
             thread.start();
@@ -133,7 +153,81 @@ public class Menu extends JFrame {
         exitButton.addActionListener(e -> {
             System.exit(0);
         });
+/*
+        signIn = new JButton("Sign In");
+        signIn.setBounds(350, 450, 200, 50);
+        gbc[8] = new GridBagConstraints();
+        gbc[8].gridx = 1;
+        gbc[8].gridy = 8;
+        getContentPane().add(signIn, gbc[8]);
+        signIn.addActionListener(e -> {
+            Thread thread = new Thread(() -> {
+                dispose();
+                new LoginService();
+                setVisible(false);
+            });
+            thread.start();
+        });
+
+ */
         setVisible(true);
+    }
+
+    /*
+    new game 실행 로직
+        1. 모든 변수를 초기화
+        2. 로그인 여부를 확인
+        2-1. 로그인이 되어있을 경우 바로 게임 시작
+        2-2. 로그인이 안 되어 있을 경우, LoginService로 넘김
+             동시에 gameCookie를 true로 변경
+             -> 로그인이 되면 새 게임 시작한 후, gameCookie를 false로 변경
+     */
+    class NewGameListener implements ActionListener {
+        JFrame frame;
+
+        public NewGameListener(JFrame f) {
+            frame = f;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+
+            //새 게임이 시작하면 모든 변수 초기화
+            StageLevel stageLevel = new StageLevel();
+            Member member = new Member();
+
+            stageLevel.setChangeFiringInterval(500);
+            stageLevel.setCurrentLevel(0);
+            stageLevel.setAlienY(10);
+            stageLevel.setSlowInvaderSpeed(1);
+
+            //loginCookie가 true다 -> 로그인이 되어 있다.
+            if (member.isLoginCookie()) {
+                JFrame frame = new JFrame();
+                JOptionPane.showMessageDialog(frame, member.getLoginName() + "님, 새 게임이 시작됩니다.");
+
+                Thread thread = new Thread(() -> {
+                    Game game = new Game();
+                    setVisible(false);
+                    game.gameLoop();
+                });
+                thread.start();
+
+            } else {
+                //로그인 쿠키가 false다 -> 로그인이 안되어 있다.
+                member.setLoginName("");
+                member.setLoginPassword("");
+                member.setGameCookie(true);
+
+                Thread thread = new Thread(() -> {
+                    dispose();
+                    new LoginService();
+                    setVisible(false);
+                });
+                thread.start();
+            }
+
+        }
     }
 
 
@@ -143,5 +237,4 @@ public class Menu extends JFrame {
 
     }
 }
-
 

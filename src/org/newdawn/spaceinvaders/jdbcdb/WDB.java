@@ -10,7 +10,7 @@ public class WDB {
         ConnectDB db = new ConnectDB();
 
         db.setConnection();
-        db.insertResult(400, 3, 300);
+        db.insertResult();
         db.showResult();
         db.showBestRecord();
         db.currentRecord();
