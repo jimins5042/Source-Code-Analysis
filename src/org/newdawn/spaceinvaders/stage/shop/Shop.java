@@ -55,8 +55,6 @@ public class Shop extends JFrame {
             shopService.Increase();
             System.out.println("상점 구매 - 공격속도 증가버튼");
 
-            System.out.println("샵 => 발사 속도 증가 성공 : 현재 속도: " + level.getChangeFiringInterval() + " 현재 코인 : " + coin.getCoin());
-
             //System.exit(0); // 지금은 나가기, 공격속도증가
         });
 

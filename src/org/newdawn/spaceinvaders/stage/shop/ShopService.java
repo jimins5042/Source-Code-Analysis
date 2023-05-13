@@ -27,8 +27,6 @@ public class ShopService {
     */
     public void Increase() {
         StageLevel level = new StageLevel();
-        Coin coin = new Coin();
-        coin.setCoin(100);
 
         System.out.println("상점 메소드 하기 전 = " + level.getChangeFiringInterval());
         //price = 능력치 구매 가격

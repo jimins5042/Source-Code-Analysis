@@ -4,7 +4,17 @@ public class GameInfo {
 
     private static int playTime = 0;
     private static int stage = 0;
-    private static int killCount=0;
+    private static int killCount = 0;
+
+    private static int score = 0;
+
+    public static int getScore() {
+        return score;
+    }
+
+    public static void setScore(int score) {
+        GameInfo.score = score;
+    }
 
     public static int getLevel() {
         return level;

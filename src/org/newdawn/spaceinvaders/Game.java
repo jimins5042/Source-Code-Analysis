@@ -267,7 +267,10 @@ public class Game extends Canvas {
      * Notification that the player has died.
      */
     public void notifyDeath() {
-        save();
+        while(!waitingForKeyPress) {
+            save();
+        }
+
         message = "Oh no! They got you, try again?";
         waitingForKeyPress = true;
     }
@@ -300,25 +303,46 @@ public class Game extends Canvas {
         info.setKillCount(killAlien);
         //스테이지는 stageLevel.getCurrentLevel 에서 관리
 
-        if (currentLevel == 5) {
-           /*
+        info.setScore((info.getKillCount() * currentLevel) * 1000  / info.getPlayTime());
+
+
+        if(currentLevel == 1){
             db.setConnection();
             db.insertResult();
             db.currentRecord();
-           */
+        }else {
+            db.setConnection();
+            db.updateResult();
+            db.currentRecord();
+        }
 
-            System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : $s",
+        if (currentLevel == 2) {
+
+            System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s",
                     info.getPlayTime(), stageLevel.getCurrentLevel(),
                     info.getKillCount(), coin.getCoin(),
-                    member.getName(), member.getPassword());
+                    member.getLoginName(), member.getLoginPassword());
 
 
             message = "게임이 끝났습니다! 당신의 기록을 확인하세요!";
             gameRunning = false;
+            int best = db.showBestRecord();
+
+            JFrame frame = new JFrame();
+            JOptionPane.showMessageDialog(frame,
+                    "게임이 끝났습니다! "+ member.getLoginName() + "님의 기록을 확인하세요! \n" +
+                            "\n" +
+                            "총 플레이 시간: " + info.getPlayTime() + " 스테이지 : " + stageLevel.getCurrentLevel()
+                             +" 킬카운트 : " + info.getKillCount() +
+                            "\n  점수 : " + coin.getCoin() + " 최고점수 : " + best);
+
+            container.dispose();
+            new Menu();
+            setVisible(false);
 
         } else {
 
-            System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : $s \n",
+            System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s",
                     info.getPlayTime(), stageLevel.getCurrentLevel(),
                     info.getKillCount(), coin.getCoin(),
                     member.getLoginName(), member.getLoginPassword());
@@ -420,10 +444,12 @@ public class Game extends Canvas {
             entities.add(ship);
         }
         if (change2) {
+            entities.remove(ship);
             ship = new ShipEntity(this, "sprites/character2.png", 370, 550);
             entities.add(ship);
         }
         if (change3) {
+            entities.remove(ship);
             ship = new ShipEntity(this, "sprites/character3.png", 370, 550);
             entities.add(ship);
         }
@@ -603,7 +629,7 @@ public class Game extends Canvas {
             }
 
             if (e.getKeyCode() == KeyEvent.VK_M) {
-                System.out.println("m 눌림");
+                System.out.println("\n m 눌림");
                 container.dispose();
                 new Menu();
                 setVisible(false);
