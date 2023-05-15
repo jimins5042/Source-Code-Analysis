@@ -1,15 +1,13 @@
 package org.newdawn.spaceinvaders.login;
 
-import org.newdawn.spaceinvaders.Menu;
+import org.newdawn.spaceinvaders.jdbcdb.ConnectDB;
 import org.newdawn.spaceinvaders.stage.StageLevel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class MemberService extends JFrame {
 
@@ -21,7 +19,7 @@ public class MemberService extends JFrame {
 
     public MemberService() {
 
-        super("Space Invader 102");
+        super("회원가입 창");
 
         StageLevel level = new StageLevel();
 
@@ -29,6 +27,7 @@ public class MemberService extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setVisible(true);
+
         // get hold the content of the frame and set up the resolution of the game
         setContentPane(new JPanel());
         setIgnoreRepaint(false);
@@ -65,32 +64,17 @@ public class MemberService extends JFrame {
 
         panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
 
-        //정상 작동 x
-        JButton signUpEnter = new JButton("회원목록 확인");
-        signUpEnter.setBounds(350, 300, 200, 50);
+        // 클릭하면 새창
+        JButton checkList = new JButton("회원목록 확인");
+        checkList.setBounds(350, 300, 200, 50);
         gbc[1] = new GridBagConstraints();
         gbc[1].gridx = 1;
         gbc[1].gridy = 1;
-        getContentPane().add(signUpEnter, gbc[1]);
-        signUpEnter.addActionListener(e -> {
-/*
-            memberRepository.save("name1", "1111");
-            memberRepository.save("name2", "2222");
-            memberRepository.save("name3", "3333");
-*/
-            Map<Long, Member> list = memberRepository.findAll();
+        getContentPane().add(checkList, gbc[1]);
 
-            /*
-            이상하다... 해쉬맵에 값은 잘 저장되어 있는데 왜 출력은 하나만 되는 것인가...
-             */
-            for (Long key : list.keySet()) {
-                System.out.println("key = " + key + " name = " + list.get(key).getName());
-            }
+        checkList.addActionListener(new MemberListListener(this));
 
-        });
-
-
-        JButton goMenu = new JButton("exit");
+        JButton goMenu = new JButton("뒤로가기");
         goMenu.setBounds(350, 600, 200, 50);
         gbc[4] = new GridBagConstraints();
         gbc[4].gridx = 1;
@@ -119,19 +103,31 @@ public class MemberService extends JFrame {
         public void actionPerformed(ActionEvent arg0) {
             //버튼을 누르면 이쪽으로 이동
             System.out.println(arg0.getActionCommand());
+            ConnectDB db = new ConnectDB();
+            db.setConnection();
+
+            /*
+                1. 아이디/비밀번호는 비어있지 않은가?
+                2. 아이디는 이미 존재하지 않는가?
+                3.
+             */
 
             if (id.getText() == null) {
                 JOptionPane.showMessageDialog(frame, "아이디는 비어있을 수 없습니다.");
+            } else if (password.getText() == null) {
+                JOptionPane.showMessageDialog(frame, "비밀번호는 비어있을 수 없습니다.");
+            } else if (db.checkPassword(id.getText()) != "") {
+                JOptionPane.showMessageDialog(frame, "이미 존재하는 아이디 입니다.");
             } else {
 
                 System.out.println("id: " + id.getText());
                 System.out.println("password: " + password.getText());
 
-                //HashMap에 데이터를 {아이디 : 비밀번호} 형식으로 저장
+                //DB에 아이디/비밀번호를 저장
                 memberRepository.save(id.getText(), password.getText());
 
                 //다이얼로그
-                JOptionPane.showMessageDialog(frame, "회원가입을 환영합니다, " + member.getName() + "님.");
+                JOptionPane.showMessageDialog(frame, "회원가입을 환영합니다, " + id.getText() + "님.");
 
                 dispose();
                 new LoginService();
@@ -165,4 +161,95 @@ public class MemberService extends JFrame {
 
         }
     }
+
+    class MemberListListener implements ActionListener {
+        JFrame frame;
+
+        public MemberListListener(JFrame f) {
+            frame = f;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            //버튼을 누르면 이쪽으로 이동
+            ConnectDB db = new ConnectDB();
+            db.setConnection();
+            ArrayList<Member> map = db.memberList();
+
+            JFrame frame = new JFrame();
+            frame.setBounds(50, 50, 500, 330); // 전체 창 크기
+            frame.setTitle("회원목록");
+            frame.setLocationRelativeTo(null);
+            frame.setAlwaysOnTop(true);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 창 닫기 버튼 누르면 꺼지게 설정
+            frame.setVisible(true);
+
+/*
+
+//아니 왜 계속 2열로 나열이 되지 왜 3행이 안되는 거야
+            JLabel[] txtId = new JLabel[map.size()];
+            JLabel[] txtNm = new JLabel[map.size()];
+            JLabel[] txtPs = new JLabel[map.size()];
+
+            JLabel initTxt = new JLabel("회원번호    회원 아이디      회원 비밀번호   \n");
+            initTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            JPanel panel = new JPanel();
+            JPanel blankPanel = new JPanel(); // 빈 영역을 위한 JPanel 추가
+            blankPanel.setLayout(new BoxLayout(blankPanel, BoxLayout.Y_AXIS)); // BoxLayout으로 설정
+
+            int n = map.size();
+            panel.setLayout(new GridLayout(n + 1, 4)); // GridLayout으로 설정하여 그리드 생성
+
+            //frame.add(panel);
+            panel.add(initTxt);
+            blankPanel.add(new JLabel()); // 빈 JLabel 추가하여 줄바꿈
+
+            for (int i = 0; i < map.size(); i++) {
+                blankPanel.add(new JLabel()); // 빈 JLabel 추가하여 줄바꿈
+
+                txtId[i] = new JLabel(map.get(i).getId() + "", JLabel.CENTER);
+                txtId[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+                panel.add(txtId[i]);
+
+                txtNm[i] = new JLabel("" + map.get(i).getName() + "", JLabel.CENTER);
+                txtNm[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+                panel.add(txtNm[i]);
+
+                txtPs[i] = new JLabel("" + map.get(i).getPassword() + "", JLabel.CENTER);
+                txtPs[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+                panel.add(txtPs[i]);
+            }
+
+ */
+
+            JLabel[] txt = new JLabel[map.size()];
+            JLabel initTxt = new JLabel("회원번호 \t 회원 아이디 \t 회원 비밀번호 \n");
+            JLabel blank = new JLabel("");
+            initTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+            blank.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+            frame.add(panel);
+            panel.add(blank);
+            panel.add(initTxt);
+
+            for (int i = 0; i < map.size(); i++) {
+                txt[i] = new JLabel("\n" + map.get(i).getId() + " \t " + map.get(i).getName() + " \t " + map.get(i).getPassword() + "\n");
+                txt[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+                panel.add(txt[i]);
+            }
+
+            // 스크롤 만드는 함수
+            JScrollPane scrollPane = new JScrollPane(panel);
+            frame.add(scrollPane);
+
+
+            setVisible(true);
+
+        }
+    }
+
 }

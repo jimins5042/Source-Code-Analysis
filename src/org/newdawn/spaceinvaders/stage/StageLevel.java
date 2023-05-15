@@ -17,20 +17,27 @@ public class StageLevel {
     //등장하는 적의 수 조절
     private int level[] = {1, 2, 1, 2, 1};
     private static float changeFiringInterval = 500;
-
     //적이 내려오는 속도 조절
-    private static float AlienY=10;
-
+    private static float AlienY = 10;
     //스테이지 단계
     private static int currentLevel = 0;
     private static float slowInvaderSpeed = 1L;
+
+    public StageLevel(float changeFiringInterval, float AlienY, int currentLevel, float slowInvaderSpeed) {
+
+        this.changeFiringInterval = changeFiringInterval;
+        this.AlienY = AlienY;
+        this.currentLevel = currentLevel;
+        this.slowInvaderSpeed = slowInvaderSpeed;
+    }
+
+
+
     public int[] getLevel() {
         return level;
     }
 
     //적 하강속도 비율
-
-
     public static float getSlowInvaderSpeed() {
         return slowInvaderSpeed;
     }

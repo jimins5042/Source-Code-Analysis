@@ -5,8 +5,9 @@ public class GameInfo {
     private static int playTime = 0;
     private static int stage = 0;
     private static int killCount = 0;
-
     private static int score = 0;
+
+
 
     public static int getScore() {
         return score;
@@ -48,6 +49,16 @@ public class GameInfo {
 
     public static void setKillCount(int killCount) {
         GameInfo.killCount = killCount;
+    }
+
+    public GameInfo(){
+
+    }
+   public GameInfo(int playTime, int killCount, int score){
+        this.playTime = playTime;
+        this.killCount = killCount;
+        this.score = score;
+
     }
 
 

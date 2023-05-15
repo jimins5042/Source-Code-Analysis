@@ -5,6 +5,9 @@ import org.newdawn.spaceinvaders.stage.StageLevel;
 import org.newdawn.spaceinvaders.stage.shop.Coin;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ConnectDB {
 
@@ -151,11 +154,13 @@ public class ConnectDB {
             System.out.println("쿼리실패_showBestRecord");
             throw new RuntimeException(e);
         }
-        System.out.println("score" +  best);
+        System.out.println("score" + best);
         return best;
 
     }
 
+    // 근데 이거 필요한가?
+    // db에 저장된 값 중간 체크 로직
     public void currentRecord() {
 
         try {
@@ -186,5 +191,85 @@ public class ConnectDB {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void saveMember(Member m) {
+
+        try {
+            String sql = "insert into memberlist(name, password) values (?,?)";
+
+            String name = m.getName();
+            String password = m.getPassword();
+
+            System.out.println("saveMember : name = " + name + " password = " + password);
+
+            psmt = con.prepareStatement(sql);
+            psmt.setString(1, name);
+            psmt.setString(2, password);
+            psmt.executeUpdate();
+
+            System.out.println("쿼리성공_saveMember");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("쿼리실패_saveMember");
+        }
+    }
+
+    public String checkPassword(String name) {
+
+        String inputPs = "";
+
+        try {
+            stmt = con.createStatement();
+            String sql = "SELECT * FROM memberlist WHERE name = '" + name + "'";
+            rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                //String inputName = rs.getString("name");
+                inputPs = rs.getString("password");
+
+                System.out.println("받은 아이디: " + name);
+                System.out.println("찾아낸 비밀번호: " + inputPs);
+
+            }
+
+            System.out.println("쿼리성공_checkPassword");
+            rs.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("쿼리실패_checkPassword");
+            throw new RuntimeException(e);
+        }
+        System.out.println("반환하는 비밀번호 = " + inputPs);
+        return inputPs;
+    }
+
+    public ArrayList<Member> memberList() {
+
+        ArrayList<Member> arr = new ArrayList<Member>();
+        System.out.println(arr);
+        try {
+            // 쿼리문을 db에 넘김, 온전한 문자열 대입
+
+            stmt = con.createStatement();
+            String sql = "select * from memberlist";
+            rs = stmt.executeQuery(sql);
+
+            // 받은 결과값을 출력
+            while (rs.next()) {
+                arr.add(new Member(rs.getInt(1), rs.getString(2), rs.getString(3)));
+                System.out.printf("memberlist -> id : %d, name : %s , password : %s \n",
+                        rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+            System.out.println("쿼리성공_memberList");
+            rs.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("쿼리실패_memberList");
+            e.printStackTrace();
+        }
+        return arr;
     }
 }

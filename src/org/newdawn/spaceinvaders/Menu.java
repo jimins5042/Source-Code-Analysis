@@ -54,8 +54,13 @@ public class Menu extends JFrame {
             Member member = new Member();
             StageLevel level = new StageLevel();
             JFrame frame = new JFrame();
-            if (!member.isLoginCookie()) {
 
+            /*
+                로그인 쿠키가 있다면 -> static으로 저장된 변수 값들 그대로 유지한 체로 게임 시작
+                로그인 쿠키가 없다면 -> 알림창 팝업
+             */
+
+            if (!member.isLoginCookie()) {
                 JOptionPane.showMessageDialog(frame, "저장된 기록이 없습니다. 로그인 해주세요.");
             } else if (level.getCurrentLevel() == 0) {
                 JOptionPane.showMessageDialog(frame, "저장된 기록이 없습니다. new game을 시작해주세요.");
@@ -153,23 +158,7 @@ public class Menu extends JFrame {
         exitButton.addActionListener(e -> {
             System.exit(0);
         });
-/*
-        signIn = new JButton("Sign In");
-        signIn.setBounds(350, 450, 200, 50);
-        gbc[8] = new GridBagConstraints();
-        gbc[8].gridx = 1;
-        gbc[8].gridy = 8;
-        getContentPane().add(signIn, gbc[8]);
-        signIn.addActionListener(e -> {
-            Thread thread = new Thread(() -> {
-                dispose();
-                new LoginService();
-                setVisible(false);
-            });
-            thread.start();
-        });
 
- */
         setVisible(true);
     }
 
@@ -193,14 +182,15 @@ public class Menu extends JFrame {
         public void actionPerformed(ActionEvent arg0) {
 
             //새 게임이 시작하면 모든 변수 초기화
-            StageLevel stageLevel = new StageLevel();
+            StageLevel stageLevel = new StageLevel(500, 10, 0, 1);
             Member member = new Member();
-
+/*
             stageLevel.setChangeFiringInterval(500);
             stageLevel.setCurrentLevel(0);
             stageLevel.setAlienY(10);
             stageLevel.setSlowInvaderSpeed(1);
 
+ */
             //loginCookie가 true다 -> 로그인이 되어 있다.
             if (member.isLoginCookie()) {
                 JFrame frame = new JFrame();

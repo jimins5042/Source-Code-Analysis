@@ -19,7 +19,7 @@ public class LoginService extends JFrame {
 
     public LoginService() {
 
-        super("Space Invader 102");
+        super("로그인 창");
 
         StageLevel level = new StageLevel();
 
@@ -103,7 +103,7 @@ public class LoginService extends JFrame {
 
         panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
 
-        JButton goMenu = new JButton("exit");
+        JButton goMenu = new JButton("뒤로가기");
         goMenu.setBounds(350, 600, 200, 50);
         gbc[4] = new GridBagConstraints();
         gbc[4].gridx = 1;
@@ -119,6 +119,11 @@ public class LoginService extends JFrame {
         this.setVisible(true);
 
     }
+
+    /*
+    로그인 로직
+        입력 받은 아이디와 비밀번호를 통해 DB에 저장되어있는 비밀번호와 비교
+     */
 
     class SignInListener implements ActionListener {
         JFrame frame;

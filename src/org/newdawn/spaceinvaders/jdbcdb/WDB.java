@@ -12,15 +12,14 @@ public class WDB {
         //드라이버 로드
 
         StageLevel level = new StageLevel();
-        GameInfo info = new GameInfo();
+        GameInfo info = new GameInfo(20,  50, 500);
         Coin coin = new Coin();
         Member member = new Member();
 
-        info.setPlayTime(20);
+
         level.setCurrentLevel(2);
-        info.setKillCount(50);
         coin.setCoin(50);
-        info.setScore(500);
+
         member.setName("testId");
         member.setPassword("testPw");
         System.out.printf("insert 쿼리 -> 시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s",

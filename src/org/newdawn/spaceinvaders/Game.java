@@ -267,7 +267,7 @@ public class Game extends Canvas {
      * Notification that the player has died.
      */
     public void notifyDeath() {
-        while(!waitingForKeyPress) {
+        while (!waitingForKeyPress) {
             save();
         }
 
@@ -303,14 +303,14 @@ public class Game extends Canvas {
         info.setKillCount(killAlien);
         //스테이지는 stageLevel.getCurrentLevel 에서 관리
 
-        info.setScore((info.getKillCount() * currentLevel) * 1000  / info.getPlayTime());
+        info.setScore((info.getKillCount() * currentLevel) * 1000 / info.getPlayTime());
 
 
-        if(currentLevel == 1){
+        if (currentLevel == 1) {
             db.setConnection();
             db.insertResult();
             db.currentRecord();
-        }else {
+        } else {
             db.setConnection();
             db.updateResult();
             db.currentRecord();
@@ -330,10 +330,10 @@ public class Game extends Canvas {
 
             JFrame frame = new JFrame();
             JOptionPane.showMessageDialog(frame,
-                    "게임이 끝났습니다! "+ member.getLoginName() + "님의 기록을 확인하세요! \n" +
+                    "게임이 끝났습니다! " + member.getLoginName() + "님의 기록을 확인하세요! \n" +
                             "\n" +
                             "총 플레이 시간: " + info.getPlayTime() + " 스테이지 : " + stageLevel.getCurrentLevel()
-                             +" 킬카운트 : " + info.getKillCount() +
+                            + " 킬카운트 : " + info.getKillCount() +
                             "\n  점수 : " + coin.getCoin() + " 최고점수 : " + best);
 
             container.dispose();
@@ -490,11 +490,24 @@ public class Game extends Canvas {
 
                 //현재 정보 표시 코드
                 message = "킬카운트: " + killAlien + "    스테이지: " + (currentLevel + 1)
-                        + "    현재 시간: " + ((int) sum / 1000) + "초 " + "coin: " + coin.getCoin() + " " + member.getLoginName();
+                        + "    현재 시간: " + ((int) sum / 1000) + "초 " + "coin: " + coin.getCoin();
 
+                /*
+                이런 식으로 도전과제 표시해야지
+
+                if((sum/1000) > 3){
+                    String messageName = "팁 : " + member.getLoginName() + "님, 게임 중 언제든 'm'키를 눌러 메뉴로 나갈 수 있습니다.";
+                    g.setColor(Color.white);
+                    g.drawString(messageName, (800 - g.getFontMetrics().stringWidth(messageName)) / 16, 60);
+                }
+
+                */
+
+                String messageName = "팁 : " + member.getLoginName() + "님, 게임 중 언제든 'm'키를 눌러 메뉴로 나갈 수 있습니다.";
 
                 g.setColor(Color.white);
                 g.drawString(message, (800 - g.getFontMetrics().stringWidth(message)) / 16, 40);
+                g.drawString(messageName, (800 - g.getFontMetrics().stringWidth(messageName)) / 14, 60);
                 for (int i = 0; i < entities.size(); i++) {
                     Entity entity = (Entity) entities.get(i);
 
