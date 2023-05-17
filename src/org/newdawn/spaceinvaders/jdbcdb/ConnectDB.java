@@ -45,7 +45,7 @@ public class ConnectDB {
             String sql = "insert into invader(play_time, stage, kill_count, play_score, coin, name, password) values (?,?,?, ?,?, ?, ?)";
 
             int play_time = info.getPlayTime();
-            int stage = value.getCurrentLevel();
+            int stage = info.getStage();
             int kill_count = info.getKillCount();
             int play_score = info.getScore();
             int coin = c.getCoin();
@@ -76,7 +76,7 @@ public class ConnectDB {
             String sql = "update invader set play_time = ?, stage = ?, kill_count = ?, play_score = ? ,coin =? where name =? and password = ? ORDER BY ID DESC LIMIT 1";
 
             int play_time = info.getPlayTime();
-            int stage = value.getCurrentLevel();
+            int stage = info.getStage();
             int kill_count = info.getKillCount();
             int play_score = info.getScore();
             int coin = c.getCoin();

@@ -1,5 +1,6 @@
 package org.newdawn.spaceinvaders.main;
 
+import org.newdawn.spaceinvaders.jdbcdb.GameInfo;
 import org.newdawn.spaceinvaders.login.LoginService;
 import org.newdawn.spaceinvaders.login.Member;
 import org.newdawn.spaceinvaders.stage.SettingValue;
@@ -72,7 +73,9 @@ public class Menu extends JFrame {
                 //button.addActionListener(new Menu.NewGameListener(this));
                 button.addActionListener(e -> {
                     //새 게임이 시작하면 모든 변수 초기화
-                    SettingValue value = new SettingValue(1, 10, 0, 1);
+                    //SettingValue value = new SettingValue(1, 10, 1);
+                    SettingValue.setAlienY(10);
+                    GameInfo info = new GameInfo(0, 0, 0, 0);
                     Member member = new Member();
 
                     //loginCookie가 true다 -> 로그인이 되어 있다.
@@ -109,7 +112,8 @@ public class Menu extends JFrame {
 
                 button.addActionListener(e -> {
                     Member member = new Member();
-                    SettingValue value = new SettingValue();
+                    GameInfo info = new GameInfo();
+
                     //JFrame frame1 = new JFrame();
 
             /*
@@ -119,7 +123,7 @@ public class Menu extends JFrame {
 
                     if (!member.isLoginCookie()) {
                         JOptionPane.showMessageDialog(frame, "저장된 기록이 없습니다. 로그인 해주세요.");
-                    } else if (value.getCurrentLevel() == 0) {
+                    } else if (info.getStage() == 0) {
                         JOptionPane.showMessageDialog(frame, "저장된 기록이 없습니다. new game을 시작해주세요.");
                     } else {
                         Thread thread = new Thread(() -> {
@@ -154,12 +158,19 @@ public class Menu extends JFrame {
             //"shop",
             else if (i == 5) {
                 button.addActionListener(e -> {
-                    Thread thread = new Thread(() -> {
-                        dispose();
-                        new Shop();
-                        frame.setVisible(false);
-                    });
-                    thread.start();
+
+                    if(Member.isLoginCookie()){
+                        Thread thread = new Thread(() -> {
+                            dispose();
+                            new Shop();
+                            frame.setVisible(false);
+                        });
+                        thread.start();
+                    }else {
+                        JOptionPane.showMessageDialog(frame, "로그인 해주세요.");
+                    }
+
+
                 });
 
             }

@@ -17,16 +17,16 @@ public class SettingValue {
     //적이 내려오는 속도 조절
     private static float AlienY = 10;
     //스테이지 단계
-    private static int currentLevel = 0;
+
     private static float slowInvaderSpeed = 1L;
 
     private static int changeShip = 1;
 
-    public SettingValue(float changeInterval, float AlienY, int currentLevel, float slowInvaderSpeed) {
+    public SettingValue(float changeInterval, float AlienY, float slowInvaderSpeed) {
 
         this.changeInterval = changeInterval;
         this.AlienY = AlienY;
-        this.currentLevel = currentLevel;
+
         this.slowInvaderSpeed = slowInvaderSpeed;
     }
 
@@ -80,12 +80,5 @@ public class SettingValue {
         AlienY = alienY;
     }
 
-    public static int getCurrentLevel() {
-        return currentLevel;
-    }
-
-    public static void setCurrentLevel(int currentLevel) {
-        SettingValue.currentLevel = currentLevel;
-    }
 
 }

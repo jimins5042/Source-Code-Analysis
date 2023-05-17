@@ -35,32 +35,60 @@ public class Shop extends JFrame {
         gbc.fill = GridBagConstraints.VERTICAL; // 수직으로 채우기
         gbc.insets = new Insets(20, 0, 10, 0); // 위, 오른쪽, 아래, 왼쪽 여백 설정
 
+        JLabel label1 = new JLabel("현재 잔액 : " + Coin.getCoin() +"원");
+
+        JLabel label = new JLabel(
+                "공격속도 증가 레벨 : " + (int) ((1 - SettingValue.getChangeInterval()) * 10 + 1) + " / 10 " +
+                        "적 하강속도 감소 레벨 : " + (int) ((1 - SettingValue.getSlowInvaderSpeed()) * 10 + 1) + " / 10 ");
+        panel.add(label1, gbc);
+        gbc.gridy++; // Y 좌표 증가
+        panel.add(label, gbc);
+        gbc.gridy++; // Y 좌표 증가
 
         // 공격속도 증가버튼
-        attackSpeedInhenceButton = new JButton("공격속도 증가 : 원");
+        attackSpeedInhenceButton = new JButton("공격속도 증가 : 5원");
         attackSpeedInhenceButton.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
         attackSpeedInhenceButton.addActionListener(e -> {
 
             shopService.Increase();
             System.out.println("상점 구매 - 공격속도 증가버튼");
-
-            //System.exit(0); // 지금은 나가기, 공격속도증가
+            frame.dispose();
+            new Shop();
+            frame.setVisible(false);
         });
         panel.add(attackSpeedInhenceButton, gbc);
 
         gbc.gridy++; // Y 좌표 증가
 
         // 적 하강속도 감소버튼
-        alienSpeedDecreaseButton = new JButton("적 하강속도 감소 : 원");
+        alienSpeedDecreaseButton = new JButton("적 하강속도 감소 : 10원");
         alienSpeedDecreaseButton.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
 
         alienSpeedDecreaseButton.addActionListener(e -> {
-
             shopService.Decrease();
             System.out.println("상점 구매 - 적 하강속도 감소버튼");
-            //System.exit(0); // 지금은 나가기, 슬로우
+            frame.dispose();
+            new Shop();
+            frame.setVisible(false);
         });
         panel.add(alienSpeedDecreaseButton, gbc);
+
+        gbc.gridy++; // Y 좌표 증가
+
+        JButton init = new JButton("능력치 초기화");
+        init.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
+
+        init.addActionListener(e -> {
+            SettingValue.setChangeInterval(1);
+            SettingValue.setSlowInvaderSpeed(1);
+            System.out.println("초기화");
+            JOptionPane.showMessageDialog(frame, "지금까지 구매한 능력치를 초기화 합니다. \n 코인은 환불되지 않습니다.");
+
+            frame.dispose();
+            new Shop();
+            frame.setVisible(false);
+        });
+        panel.add(init, gbc);
 
         gbc.gridy++; // Y 좌표 증가
 
@@ -77,7 +105,6 @@ public class Shop extends JFrame {
         panel.add(goMenu, gbc);
 
         gbc.gridy++; // Y 좌표 증가
-
 
         frame.add(panel);
         frame.setVisible(true);

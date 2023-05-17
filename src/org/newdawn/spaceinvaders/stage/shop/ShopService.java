@@ -2,8 +2,10 @@ package org.newdawn.spaceinvaders.stage.shop;
 
 import org.newdawn.spaceinvaders.stage.SettingValue;
 
-public class ShopService {
+import javax.swing.*;
 
+public class ShopService {
+JFrame frame;
 
     /*
     -발사속도 증가 능력치 증가 로직-
@@ -22,10 +24,12 @@ public class ShopService {
         if (pur) {
             if (value.getChangeInterval() <= 0.1) {
                 System.out.println("발사속도 최대 증가");
+                JOptionPane.showMessageDialog(frame, "최대 수치 도달 - 더 이상 구매할 수 없습니다.");
             } else {
 
                 value.setChangeInterval((float)(value.getChangeInterval() - 0.1));
                 System.out.println("발사 속도 증가 성공 - 현재 속도 감사비율: " + value.getChangeInterval());
+
             }
         }
     }
@@ -45,6 +49,7 @@ public class ShopService {
         if (pur) {
             if (value.getSlowInvaderSpeed() <= 0.1) {
                 System.out.println("적 하강속도 최대 감소");
+                JOptionPane.showMessageDialog(frame, "최대 수치 도달 - 더 이상 구매할 수 없습니다.");
             } else {
                 value.setSlowInvaderSpeed((float) (value.getSlowInvaderSpeed() - 0.1));
 
@@ -60,6 +65,7 @@ public class ShopService {
         //잔액이 부족하면 false를 리턴
         if ((coin.getCoin() - price) < 0) {
             System.out.println("잔액부족 - 현재 코인 : " + coin.getCoin());
+            JOptionPane.showMessageDialog(frame, "잔액이 부족합니다. 현재 코인 : " + coin.getCoin());
             return false;
         }
         //잔액이 충분하면 true를 리턴

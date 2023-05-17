@@ -15,13 +15,13 @@ public class WDB {
         Member member = new Member();
 
 
-        value.setCurrentLevel(2);
+        info.setStage(2);
         coin.setCoin(50);
 
         member.setName("testId");
         member.setPassword("testPw");
         System.out.printf("insert 쿼리 -> 시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s",
-                info.getPlayTime(), value.getCurrentLevel(),
+                info.getPlayTime(), info.getStage(),
                 info.getKillCount(), coin.getCoin(),
                 member.getName(), member.getPassword());
 
@@ -30,13 +30,13 @@ public class WDB {
         db.insertResult();
 
         info.setPlayTime(40);
-        value.setCurrentLevel(4);
+        info.setStage(4);
         info.setKillCount(20);
         coin.setCoin(30);
         info.setScore(1100);
 
         System.out.printf("update 쿼리 -> 시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s ",
-                info.getPlayTime(), value.getCurrentLevel(),
+                info.getPlayTime(), info.getStage(),
                 info.getKillCount(), coin.getCoin(),
                 member.getName(), member.getPassword());
 

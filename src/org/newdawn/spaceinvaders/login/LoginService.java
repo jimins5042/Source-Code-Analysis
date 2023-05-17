@@ -47,7 +47,7 @@ public class LoginService extends JFrame {
 
         if (member.isLoginCookie()) {
 
-            panel.add(Box.createVerticalStrut(100)); // 수직 간격 100픽셀
+            panel.add(Box.createVerticalStrut(150)); // 수직 간격 100픽셀
 
             panel.add(new JLabel(member.getLoginName() + "님의 마이 페이지"));
             panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
@@ -55,6 +55,11 @@ public class LoginService extends JFrame {
             JButton button = new JButton("게임기록 확인");
             button.addActionListener(new LoginService.RecordListListener(this));
             panel.add(button);
+            panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
+
+            JButton button1 = new JButton("도전과제 확인");
+            button1.addActionListener(new LoginService.ChallengeListener(this));
+            panel.add(button1);
             panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
 
 
@@ -66,7 +71,8 @@ public class LoginService extends JFrame {
                 member.setLoginName("");
                 member.setLoginPassword("");
 
-                value.setCurrentLevel(0);
+                GameInfo info = new GameInfo();
+                info.setStage(0);
                 //알림창 구현
                 JOptionPane.showMessageDialog(frame, "로그아웃 되었습니다.");
 
@@ -92,10 +98,12 @@ public class LoginService extends JFrame {
             panel.add(new JLabel("아이디:"));
             id = new JTextField(20);
             panel.add(id);
+            panel.add(Box.createVerticalStrut(10)); // 수직 간격 20픽셀
 
             panel.add(new JLabel("비밀번호:"));
             password = new JTextField(20);
             panel.add(password);
+            panel.add(Box.createVerticalStrut(10)); // 수직 간격 20픽셀
 
             JButton button = new JButton("확인");
             button.addActionListener(new LoginService.SignInListener(this));
@@ -265,7 +273,7 @@ public class LoginService extends JFrame {
             ArrayList<SendGameInfo> playRecord = db.playRecordList();
 
             JFrame frame = new JFrame();
-            frame.setBounds(50, 50, 500, 330); // 전체 창 크기
+            frame.setBounds(50, 50, 600, 600); // 전체 창 크기
             frame.setTitle("게임기록");
             frame.setLocationRelativeTo(null);
             frame.setAlwaysOnTop(true);
@@ -275,9 +283,11 @@ public class LoginService extends JFrame {
             JLabel[] txt = new JLabel[playRecord.size()];
             JLabel initTxt = new JLabel("살아남은 시간 / 킬카운트 / 생존한 스테이지 수 / 점수 \n");
             JLabel blank = new JLabel("");
-            JLabel memInfo = new JLabel( member.getLoginName() + "님의 게임 플레이 기록입니다.  \n 최고기록 : " + best);
+            JLabel memInfo = new JLabel(member.getLoginName() + "님의 게임 플레이 기록입니다.");
+            JLabel bestInfo = new JLabel("최고기록 : " + best);
 
             memInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
+            bestInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
             initTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
             blank.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -288,13 +298,18 @@ public class LoginService extends JFrame {
             frame.add(panel);
             panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
             panel.add(memInfo);
+            if (best == 0) {
+                bestInfo = new JLabel("게임 플레이 기록이 없습니다");
+                bestInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
+            }
+            panel.add(Box.createVerticalStrut(10)); // 수직 간격 20픽셀
+            panel.add(bestInfo);
 
             panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
 
             panel.add(initTxt);
             panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
 
-            // public GameInfo(int playTime, int killCount,int stage, int score){
             for (int i = 0; i < playRecord.size(); i++) {
                 txt[i] = new JLabel("\n" + playRecord.get(i).getPlayTime() + "    " + playRecord.get(i).getKillCount()
                         + "    " + playRecord.get(i).getStage() + "    " + playRecord.get(i).getScore() + "\n");
@@ -309,7 +324,136 @@ public class LoginService extends JFrame {
 
         }
     }
+    class ChallengeListener implements ActionListener {
+        JFrame frame;
+        int rate = 0;
 
+        public ChallengeListener(JFrame f) {
+            frame = f;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            //버튼을 누르면 이쪽으로 이동
+
+            ChallengeRepository cr = new ChallengeRepository();
+
+            JFrame frame = new JFrame();
+            frame.setBounds(50, 50, 500, 330); // 전체 창 크기
+            frame.setTitle("도전과제");
+            frame.setLocationRelativeTo(null);
+            frame.setAlwaysOnTop(true);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 창 닫기 버튼 누르면 꺼지게 설정
+            frame.setVisible(true);
+
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+
+            JLabel remove;
+            JLabel timeAtk;
+            JLabel noItem;
+
+
+            //long C_remove, long C_timeAtk, long C_noItem
+            switch (cr.getC_remove()){
+                case 1:{
+                    remove = new JLabel("적 처치 10마리 달성!");
+                    rate += 10;
+                }break;
+                case 2:{
+                    remove = new JLabel("적 처치 50마리 달성!");
+                    rate += 20;
+                }break;
+                case 3:{
+                    remove = new JLabel("적 처치 100마리 달성!");
+                    rate += 30;
+                }break;
+                case 4:{
+                    remove = new JLabel("적 처치 500마리 달성!");
+                    rate += 40;
+                }break;
+
+                default:{
+                    remove = new JLabel("적 처치 도전과제 미달성");
+                }break;
+            }
+
+
+            switch (cr.getC_timeAtk()){
+                case 1:{
+                    timeAtk = new JLabel("도전과제 달성! = 60초 안에 스테이지 3 클리어");
+                    rate += 10;
+                }break;
+                case 2:{
+                    timeAtk = new JLabel("도전과제 달성! = 100초 안에 스테이지 5 클리어");
+                    rate += 20;
+                }break;
+                case 3:{
+                    timeAtk = new JLabel("도전과제 달성! = 140초 안에 스테이지 7 클리어");
+                    rate += 30;
+                }break;
+                default:{
+                    timeAtk = new JLabel("타임어택 도전과제 미달성");
+                }break;
+            }
+
+
+            switch (cr.getC_noItem()){
+                case 1:{
+                    noItem = new JLabel("도전과제 달성! = 상점 미사용하고 스테이지 4 클리어 ");
+                    rate += 10;
+                }break;
+                case 2:{
+                    noItem = new JLabel("도전과제 달성! = 상점 미사용하고 스테이지 8 클리어 ");
+                    rate += 20;
+                }break;
+                case 3:{
+                    noItem = new JLabel("도전과제 달성! = 상점 미사용하고 스테이지 12 클리어 ");
+                    rate += 30;
+                }break;
+                default:{
+                    noItem = new JLabel("상점 미사용 도전과제 미달성");
+                }break;
+            }
+
+            JLabel title = new JLabel("도전과제 목록");
+            JLabel memInfo = new JLabel(member.getLoginName() + "님의 도전과제 달성률 페이지 입니다.");
+            JLabel rateInfo = new JLabel("도전과제 달성률 : " + rate + "%");
+
+            memInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
+            title.setAlignmentX(Component.CENTER_ALIGNMENT);
+            rateInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
+            remove.setAlignmentX(Component.CENTER_ALIGNMENT);
+            timeAtk.setAlignmentX(Component.CENTER_ALIGNMENT);
+            noItem.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            panel.add(Box.createVerticalStrut(50)); // 수직 간격 20픽셀
+
+            panel.add(memInfo);
+            panel.add(Box.createVerticalStrut(10)); // 수직 간격 20픽셀
+
+            panel.add(rateInfo);
+            panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
+
+            panel.add(title);
+            panel.add(Box.createVerticalStrut(20)); // 수직 간격 20픽셀
+
+            panel.add(remove);
+            panel.add(Box.createVerticalStrut(15)); // 수직 간격 20픽셀
+            panel.add(timeAtk);
+            panel.add(Box.createVerticalStrut(15)); // 수직 간격 20픽셀
+            panel.add(noItem);
+            panel.add(Box.createVerticalStrut(15)); // 수직 간격 20픽셀
+
+
+            // 스크롤 만드는 함수
+            JScrollPane scrollPane = new JScrollPane(panel);
+            frame.add(scrollPane);
+            setVisible(true);
+
+        }
+    }
 
 }
 

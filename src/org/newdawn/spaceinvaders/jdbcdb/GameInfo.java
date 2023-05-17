@@ -21,16 +21,6 @@ public class GameInfo {
         GameInfo.score = score;
     }
 
-    public static int getLevel() {
-        return level;
-    }
-
-    public static void setLevel(int level) {
-        GameInfo.level = level;
-    }
-
-    private static int level;
-
     public static int getPlayTime() {
         return playTime;
     }
