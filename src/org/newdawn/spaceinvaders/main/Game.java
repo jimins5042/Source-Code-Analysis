@@ -8,7 +8,7 @@ import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
 import org.newdawn.spaceinvaders.jdbcdb.ConnectDB;
 import org.newdawn.spaceinvaders.jdbcdb.GameInfo;
-import org.newdawn.spaceinvaders.login.Challenge;
+import org.newdawn.spaceinvaders.login.challenge.Challenge;
 import org.newdawn.spaceinvaders.login.Member;
 import org.newdawn.spaceinvaders.stage.SettingValue;
 import org.newdawn.spaceinvaders.stage.shop.Coin;

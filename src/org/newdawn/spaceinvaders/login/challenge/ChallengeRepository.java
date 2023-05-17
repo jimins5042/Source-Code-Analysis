@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders.login;
+package org.newdawn.spaceinvaders.login.challenge;
 
 public class ChallengeRepository {
     public ChallengeRepository() {

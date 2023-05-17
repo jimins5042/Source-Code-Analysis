@@ -1,5 +1,6 @@
 package org.newdawn.spaceinvaders.login;
 
+import org.newdawn.spaceinvaders.login.challenge.ChallengeRepository;
 import org.newdawn.spaceinvaders.jdbcdb.ConnectDB;
 import org.newdawn.spaceinvaders.jdbcdb.GameInfo;
 import org.newdawn.spaceinvaders.jdbcdb.SendGameInfo;
