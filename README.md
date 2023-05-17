@@ -63,5 +63,18 @@
   -> 되야 하는데 적을 처치하면 바로 사라짐. 왜지
 - 적처치, 타임어택, 아이템 
 
+## DB
+- setConnection() : DB 연결
+- insertResult() : DB에 게임 기록 저장
+- updateResult() : 저장된 기록 수정
+- showResult() : 기록 전부 조회 -> 안씀
+- showBestRecord() : 로그인된 사용자의 최고기록 반환
+- 
+- currentRecord() : 가장 최근 기록 조회 -> 안씀
+- saveMember(Member m) : 회원가입시 회원 정보 저장
+- checkPassword(String name) : 비밀번호를 반환 -> 로그인 로직에서 사용
+-  ArrayList<Member> memberList() : 가입자 목록 반환
+- ArrayList<SendGameInfo> playRecordList() : 특정 사용자의 게임기록 반환
+
 ## 기타
 - 화면 레이아웃 변경, listener 적극 사용
