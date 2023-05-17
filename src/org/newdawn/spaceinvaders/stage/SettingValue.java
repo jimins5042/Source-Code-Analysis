@@ -1,37 +1,55 @@
 package org.newdawn.spaceinvaders.stage;
 
-import org.newdawn.spaceinvaders.entity.AlienEntity;
-import org.newdawn.spaceinvaders.entity.Entity;
-import org.newdawn.spaceinvaders.entity.ShipEntity;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
 //난이도 조절하는 클래스
 
-public class StageLevel {
-    public StageLevel() {
+public class SettingValue {
+    public SettingValue() {
 
     }
 
     //등장하는 적의 수 조절
     private int level[] = {1, 2, 1, 2, 1};
     private static float changeFiringInterval = 500;
+
+
+    //발사속도 간격 감소 비율
+    private static float changeInterval = 1L;
     //적이 내려오는 속도 조절
     private static float AlienY = 10;
     //스테이지 단계
     private static int currentLevel = 0;
     private static float slowInvaderSpeed = 1L;
 
-    public StageLevel(float changeFiringInterval, float AlienY, int currentLevel, float slowInvaderSpeed) {
+    private static int changeShip = 1;
 
-        this.changeFiringInterval = changeFiringInterval;
+    public SettingValue(float changeInterval, float AlienY, int currentLevel, float slowInvaderSpeed) {
+
+        this.changeInterval = changeInterval;
         this.AlienY = AlienY;
         this.currentLevel = currentLevel;
         this.slowInvaderSpeed = slowInvaderSpeed;
     }
 
+    public static float getChangeInterval() {
+        return changeInterval;
+    }
 
+    public static void setChangeInterval(float changeInterval) {
+        SettingValue.changeInterval = changeInterval;
+    }
+
+
+    public void setLevel(int[] level) {
+        this.level = level;
+    }
+
+    public static int getChangeShip() {
+        return changeShip;
+    }
+
+    public static void setChangeShip(int changeShip) {
+        SettingValue.changeShip = changeShip;
+    }
 
     public int[] getLevel() {
         return level;
@@ -43,7 +61,7 @@ public class StageLevel {
     }
 
     public static void setSlowInvaderSpeed(float slowInvaderSpeed) {
-        StageLevel.slowInvaderSpeed = slowInvaderSpeed;
+        SettingValue.slowInvaderSpeed = slowInvaderSpeed;
     }
 
     public static float getChangeFiringInterval() {
@@ -51,7 +69,7 @@ public class StageLevel {
     }
 
     public static void setChangeFiringInterval(float changeFiringInterval) {
-        StageLevel.changeFiringInterval = changeFiringInterval;
+        SettingValue.changeFiringInterval = changeFiringInterval;
     }
 
     public static float getAlienY() {
@@ -67,7 +85,7 @@ public class StageLevel {
     }
 
     public static void setCurrentLevel(int currentLevel) {
-        StageLevel.currentLevel = currentLevel;
+        SettingValue.currentLevel = currentLevel;
     }
 
 }

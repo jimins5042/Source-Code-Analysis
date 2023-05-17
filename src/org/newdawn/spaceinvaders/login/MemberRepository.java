@@ -9,7 +9,7 @@ public class MemberRepository {
 
     private static long sequence = 0L;
     Member member = new Member();
-ConnectDB db = new ConnectDB();
+    ConnectDB db = new ConnectDB();
 
 
     public void save(String name, String password) {

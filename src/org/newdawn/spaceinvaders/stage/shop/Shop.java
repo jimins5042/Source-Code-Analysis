@@ -1,7 +1,7 @@
 package org.newdawn.spaceinvaders.stage.shop;
 
-import org.newdawn.spaceinvaders.Menu;
-import org.newdawn.spaceinvaders.stage.StageLevel;
+import org.newdawn.spaceinvaders.main.Menu;
+import org.newdawn.spaceinvaders.stage.SettingValue;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,39 +17,28 @@ public class Shop extends JFrame {
 
     Coin coin = new Coin();
 
-    public Shop(){
+    public Shop() {
 
         super("Space Invader 102");
 
-        StageLevel level = new StageLevel();
+        JFrame frame = new JFrame();
+        frame.setBounds(50, 50, 800, 600); // 전체 창 크기
+        frame.setTitle("상점");
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 창 닫기 버튼 누르면 꺼지게 설정
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        // get hold the content of the frame and set up the resolution of the game
-        setContentPane(new JPanel());
-        setIgnoreRepaint(false);
-        GridBagConstraints[] gbc = new GridBagConstraints[BUTTON_SIZE];
-        GridBagLayout gbl = new GridBagLayout();
-        setLayout(gbl);
+        JPanel panel = new JPanel(new GridBagLayout());
 
-        attackDamageInhenceButton = new JButton("attack damage ++");
-        attackDamageInhenceButton.setBounds(350, 300, 200, 50);
-        gbc[1] = new GridBagConstraints();
-        gbc[1].gridx = 1;
-        gbc[1].gridy = 1;
-        getContentPane().add(attackDamageInhenceButton,gbc[1]);
-        attackDamageInhenceButton.addActionListener(e -> {
-            System.exit(0); // 지금은 나가기, 공격력 증가
-        });
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0; // 그리드 X 좌표
+        gbc.gridy = 0; // 그리드 Y 좌표
+        gbc.fill = GridBagConstraints.VERTICAL; // 수직으로 채우기
+        gbc.insets = new Insets(20, 0, 10, 0); // 위, 오른쪽, 아래, 왼쪽 여백 설정
 
-        attackSpeedInhenceButton = new JButton("attack speed ++");
-        attackSpeedInhenceButton.setBounds(350, 350, 200, 50);
-        gbc[2] = new GridBagConstraints();
-        gbc[2].gridx = 1;
-        gbc[2].gridy = 2;
-        getContentPane().add(attackSpeedInhenceButton,gbc[2]);
+
+        // 공격속도 증가버튼
+        attackSpeedInhenceButton = new JButton("공격속도 증가 : 원");
+        attackSpeedInhenceButton.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
         attackSpeedInhenceButton.addActionListener(e -> {
 
             shopService.Increase();
@@ -57,30 +46,41 @@ public class Shop extends JFrame {
 
             //System.exit(0); // 지금은 나가기, 공격속도증가
         });
+        panel.add(attackSpeedInhenceButton, gbc);
 
-        alienSpeedDecreaseButton = new JButton("alien speed down");
-        alienSpeedDecreaseButton.setBounds(350, 400, 200, 50);
-        gbc[3] = new GridBagConstraints();
-        gbc[3].gridx = 1;
-        gbc[3].gridy = 3;
-        getContentPane().add(alienSpeedDecreaseButton,gbc[3]);
+        gbc.gridy++; // Y 좌표 증가
+
+        // 적 하강속도 감소버튼
+        alienSpeedDecreaseButton = new JButton("적 하강속도 감소 : 원");
+        alienSpeedDecreaseButton.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
+
         alienSpeedDecreaseButton.addActionListener(e -> {
 
             shopService.Decrease();
             System.out.println("상점 구매 - 적 하강속도 감소버튼");
             //System.exit(0); // 지금은 나가기, 슬로우
         });
+        panel.add(alienSpeedDecreaseButton, gbc);
 
-        goMenu = new JButton("exit");
-        goMenu.setBounds(350, 450, 200, 50);
-        gbc[4] = new GridBagConstraints();
-        gbc[4].gridx = 1;
-        gbc[4].gridy = 4;
-        getContentPane().add(goMenu,gbc[4]);
+        gbc.gridy++; // Y 좌표 증가
+
+        // exit
+
+        goMenu = new JButton("나가기");
+        goMenu.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
+
         goMenu.addActionListener(e -> {
-            dispose();
+            frame.dispose();
             new Menu();
-            setVisible(false);
+            frame.setVisible(false);
         });
+        panel.add(goMenu, gbc);
+
+        gbc.gridy++; // Y 좌표 증가
+
+
+        frame.add(panel);
+        frame.setVisible(true);
     }
 }
+

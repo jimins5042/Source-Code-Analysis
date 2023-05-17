@@ -1,7 +1,7 @@
 package org.newdawn.spaceinvaders.login;
 
 import org.newdawn.spaceinvaders.jdbcdb.ConnectDB;
-import org.newdawn.spaceinvaders.stage.StageLevel;
+import org.newdawn.spaceinvaders.stage.SettingValue;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +21,7 @@ public class MemberService extends JFrame {
 
         super("회원가입 창");
 
-        StageLevel level = new StageLevel();
+        SettingValue value = new SettingValue();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -71,7 +71,6 @@ public class MemberService extends JFrame {
         gbc[1].gridx = 1;
         gbc[1].gridy = 1;
         getContentPane().add(checkList, gbc[1]);
-
         checkList.addActionListener(new MemberListListener(this));
 
         JButton goMenu = new JButton("뒤로가기");
@@ -184,45 +183,6 @@ public class MemberService extends JFrame {
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 창 닫기 버튼 누르면 꺼지게 설정
             frame.setVisible(true);
 
-/*
-
-//아니 왜 계속 2열로 나열이 되지 왜 3행이 안되는 거야
-            JLabel[] txtId = new JLabel[map.size()];
-            JLabel[] txtNm = new JLabel[map.size()];
-            JLabel[] txtPs = new JLabel[map.size()];
-
-            JLabel initTxt = new JLabel("회원번호    회원 아이디      회원 비밀번호   \n");
-            initTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-            JPanel panel = new JPanel();
-            JPanel blankPanel = new JPanel(); // 빈 영역을 위한 JPanel 추가
-            blankPanel.setLayout(new BoxLayout(blankPanel, BoxLayout.Y_AXIS)); // BoxLayout으로 설정
-
-            int n = map.size();
-            panel.setLayout(new GridLayout(n + 1, 4)); // GridLayout으로 설정하여 그리드 생성
-
-            //frame.add(panel);
-            panel.add(initTxt);
-            blankPanel.add(new JLabel()); // 빈 JLabel 추가하여 줄바꿈
-
-            for (int i = 0; i < map.size(); i++) {
-                blankPanel.add(new JLabel()); // 빈 JLabel 추가하여 줄바꿈
-
-                txtId[i] = new JLabel(map.get(i).getId() + "", JLabel.CENTER);
-                txtId[i].setAlignmentX(Component.CENTER_ALIGNMENT);
-                panel.add(txtId[i]);
-
-                txtNm[i] = new JLabel("" + map.get(i).getName() + "", JLabel.CENTER);
-                txtNm[i].setAlignmentX(Component.CENTER_ALIGNMENT);
-                panel.add(txtNm[i]);
-
-                txtPs[i] = new JLabel("" + map.get(i).getPassword() + "", JLabel.CENTER);
-                txtPs[i].setAlignmentX(Component.CENTER_ALIGNMENT);
-                panel.add(txtPs[i]);
-            }
-
- */
-
             JLabel[] txt = new JLabel[map.size()];
             JLabel initTxt = new JLabel("회원번호 \t 회원 아이디 \t 회원 비밀번호 \n");
             JLabel blank = new JLabel("");
@@ -233,13 +193,17 @@ public class MemberService extends JFrame {
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
             frame.add(panel);
+
             panel.add(blank);
+            panel.add(Box.createVerticalStrut(30)); // 수직 간격 20픽셀
+
             panel.add(initTxt);
 
             for (int i = 0; i < map.size(); i++) {
                 txt[i] = new JLabel("\n" + map.get(i).getId() + " \t " + map.get(i).getName() + " \t " + map.get(i).getPassword() + "\n");
                 txt[i].setAlignmentX(Component.CENTER_ALIGNMENT);
                 panel.add(txt[i]);
+                panel.add(Box.createVerticalStrut(10)); // 수직 간격 20픽셀
             }
 
             // 스크롤 만드는 함수

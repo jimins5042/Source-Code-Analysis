@@ -1,14 +1,15 @@
-package org.newdawn.spaceinvaders;
+package org.newdawn.spaceinvaders.main;
 
+import org.newdawn.spaceinvaders.Sound;
+import org.newdawn.spaceinvaders.SystemTimer;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
 import org.newdawn.spaceinvaders.jdbcdb.ConnectDB;
 import org.newdawn.spaceinvaders.jdbcdb.GameInfo;
-import org.newdawn.spaceinvaders.login.LoginService;
 import org.newdawn.spaceinvaders.login.Member;
-import org.newdawn.spaceinvaders.stage.StageLevel;
+import org.newdawn.spaceinvaders.stage.SettingValue;
 import org.newdawn.spaceinvaders.stage.shop.Coin;
 
 import javax.swing.*;
@@ -19,6 +20,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -36,7 +38,7 @@ import java.util.ArrayList;
  * @author Kevin Glass
  */
 public class Game extends Canvas {
-    StageLevel stageLevel = new StageLevel();
+    SettingValue value = new SettingValue();
     /**
      * The stragey that allows us to use accelerate page flipping
      */
@@ -67,8 +69,6 @@ public class Game extends Canvas {
      */
     protected long lastFire = 0;
     /** The interval between our players shot (ms) */
-    //protected long firingInterval = 500;
-    //protected float firingInterval = stageLevel.getChangeFiringInterval();
 
     /**
      * The number of aliens left on the screen
@@ -117,18 +117,19 @@ public class Game extends Canvas {
      * The game window that we'll update with the frame count
      */
     protected JFrame container;
-    protected boolean change1 = false;
-    protected boolean change2 = false;
-    protected boolean change3 = false;
+    private int shotInterval;
+
     //ConnectDB 인스턴스
     ConnectDB db = new ConnectDB();
-    int level[] = stageLevel.getLevel();
+    int level[] = value.getLevel();
 
-    int currentLevel = stageLevel.getCurrentLevel();
+    private int currentLevel = value.getCurrentLevel();
     protected Sound gameSound = new Sound();
     Coin coin = new Coin();
     Member member = new Member();
     GameInfo info = new GameInfo();
+
+    Random random = new Random();
 
 
     /**
@@ -190,19 +191,6 @@ public class Game extends Canvas {
         // clear out any existing entities and intialise a new set
         entities.clear();
         initEntities();
-        if (change1) {
-            entities.remove(ship);
-            ship = new ShipEntity(this, "sprites/character1.jpg", 370, 550);
-            entities.add(ship);
-        }
-        if (change2) {
-            ship = new ShipEntity(this, "sprites/character2.png", 370, 550);
-            entities.add(ship);
-        }
-        if (change3) {
-            ship = new ShipEntity(this, "sprites/character3.png", 370, 550);
-            entities.add(ship);
-        }
 
         // blank out any keyboard settings we might currently have
         leftPressed = false;
@@ -216,26 +204,36 @@ public class Game extends Canvas {
      */
     private void initEntities() {
         // create the player ship and place it roughly in the center of the screen
-        if (change1) {
-            entities.remove(ship);
+        entities.remove(ship);
+
+        //탱크
+        if (value.getChangeShip() == 2) {
             ship = new ShipEntity(this, "sprites/character1.jpg", 370, 550);
+            shotInterval = 800;
             entities.add(ship);
-        }
-        if (change2) {
+
+            //전투기
+        } else if (value.getChangeShip() == 3) {
             ship = new ShipEntity(this, "sprites/character2.png", 370, 550);
+            shotInterval = 450;
+            entities.add(ship);
+
+            //로켓
+        } else if (value.getChangeShip() == 4) {
+            ship = new ShipEntity(this, "sprites/character3.png", 370, 550);
+            shotInterval = 900;
+            entities.add(ship);
+        } else {
+            ship = new ShipEntity(this, "sprites/ship.gif", 370, 550);
+            shotInterval = 500;
             entities.add(ship);
         }
-        if (change3) {
-            ship = new ShipEntity(this, "sprites/character3.png", 370, 550);
-            entities.add(ship);
-        } else ship = new ShipEntity(this, "sprites/ship.gif", 370, 550);
-        entities.add(ship);
+
 
         // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
         alienCount = 0;
         //매 스테이지마다 적의 수 변경
-        int n = level[currentLevel];
-        for (int row = 0; row < n; row++) {
+        for (int row = 0; row < (currentLevel + 1); row++) {
             for (int x = 0; x < 12; x++) {
                 Entity alien = new AlienEntity(this, 100 + (x * 50), (50) + row * 30);
                 entities.add(alien);
@@ -301,7 +299,7 @@ public class Game extends Canvas {
         sumTime = (sum / 1000) + sumTime;
         info.setPlayTime((int) sumTime);
         info.setKillCount(killAlien);
-        //스테이지는 stageLevel.getCurrentLevel 에서 관리
+        //스테이지는 SettingValue.getCurrentLevel 에서 관리
 
         info.setScore((info.getKillCount() * currentLevel) * 1000 / info.getPlayTime());
 
@@ -316,10 +314,10 @@ public class Game extends Canvas {
             db.currentRecord();
         }
 
-        if (currentLevel == 2) {
+        if (currentLevel == 5) {
 
             System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s",
-                    info.getPlayTime(), stageLevel.getCurrentLevel(),
+                    info.getPlayTime(), value.getCurrentLevel(),
                     info.getKillCount(), coin.getCoin(),
                     member.getLoginName(), member.getLoginPassword());
 
@@ -332,7 +330,7 @@ public class Game extends Canvas {
             JOptionPane.showMessageDialog(frame,
                     "게임이 끝났습니다! " + member.getLoginName() + "님의 기록을 확인하세요! \n" +
                             "\n" +
-                            "총 플레이 시간: " + info.getPlayTime() + " 스테이지 : " + stageLevel.getCurrentLevel()
+                            "총 플레이 시간: " + info.getPlayTime() + " 스테이지 : " + value.getCurrentLevel()
                             + " 킬카운트 : " + info.getKillCount() +
                             "\n  점수 : " + coin.getCoin() + " 최고점수 : " + best);
 
@@ -343,7 +341,7 @@ public class Game extends Canvas {
         } else {
 
             System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s",
-                    info.getPlayTime(), stageLevel.getCurrentLevel(),
+                    info.getPlayTime(), value.getCurrentLevel(),
                     info.getKillCount(), coin.getCoin(),
                     member.getLoginName(), member.getLoginPassword());
             message = "next stage = " + (currentLevel + 1) + " 플레이시간: " + sumTime;
@@ -364,21 +362,26 @@ public class Game extends Canvas {
         alienCount--;
         killAlien++;
         //gameSound.soundPlay("bgm/monster.wav",false);
+
+        if(random.nextInt(6) == 1){
+            coin.setCoin(Coin.getCoin() + 1);
+        }
+
         //스테이지가 끝나면 다음 스테이지를 보여줌
         //notifyWin() 함수로 현재까지 죽인 적의 수와 플레이 시간을 넘김
         if (alienCount == 0) {
             waitingForKeyPress = true;
 
             //스테이지 레벨 증가로직
-            stageLevel.setCurrentLevel(currentLevel + 1);
-            currentLevel = stageLevel.getCurrentLevel();
+            value.setCurrentLevel(currentLevel + 1);
+            currentLevel = value.getCurrentLevel();
 
             //적 하강 속도 변환 로직
             // 스테이지가 증가할때마다 속도 5씩 증가, 적 속도 감소 아이템을 구매하는 만큼 속도 감소
-            float i = ((5 * stageLevel.getCurrentLevel()) + 10) * StageLevel.getSlowInvaderSpeed();
-            stageLevel.setAlienY(i);
+            float i = ((5 * value.getCurrentLevel()) + 10) * value.getSlowInvaderSpeed();
+            value.setAlienY(i);
 
-            System.out.println("스테이지 레벨 증가. 현재 레벨: " + (currentLevel + 1) + " 적 속도 증가 : " + stageLevel.getAlienY());
+            System.out.println("스테이지 레벨 증가. 현재 레벨: " + (currentLevel + 1) + " 적 속도 증가 : " + value.getAlienY());
             notifyWin();
 
         }
@@ -403,21 +406,61 @@ public class Game extends Canvas {
      */
     public void tryToFire() {
 
-        if (System.currentTimeMillis() - lastFire < stageLevel.getChangeFiringInterval()) {
+        //사격 발사속도 관련
+        if (System.currentTimeMillis() - lastFire < (int) (shotInterval * value.getChangeInterval())) {
             return;
         }
-        // if we waited long enough, create the shot entity, and record the time.
         lastFire = System.currentTimeMillis();
-        ShotEntity shot = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 10, ship.getY() - 30);
-        entities.add(shot);
+        // if we waited long enough, create the shot entity, and record the time.
+        fireShape(value.getChangeShip());
 
-        /*
-        ShotEntity shot1 = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 30, ship.getY() - 30);
-        entities.add(shot1);
-         */
-
-        //gameSound.soundPlay("bgm/fire.wav",false);
     }
+
+    /*
+    n=1 : 기본
+    n=2 : 산탄, 3발
+    n=3 : 양 옆에서 번갈아가면서 총알
+    n=4 : 2점사
+     */
+    private int i;  //번갈아가면서 총쏠때 쓰는거
+    public void fireShape(int n) {
+
+        if (n == 2) {
+            ShotEntity shot2 = new ShotEntity(this, "sprites/shot.gif", ship.getX() - 20, ship.getY() - 30);
+            entities.add(shot2);
+            ShotEntity shot = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 10, ship.getY() - 40);
+            entities.add(shot);
+            ShotEntity shot1 = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 40, ship.getY() - 30);
+            entities.add(shot1);
+
+        } else if (n == 3) {
+            if(i == 1){
+                ShotEntity shot = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 35, ship.getY() - 30);
+                entities.add(shot);
+                i = 0;
+            }else {
+                ShotEntity shot = new ShotEntity(this, "sprites/shot.gif", ship.getX() - 15, ship.getY() - 30);
+                entities.add(shot);
+                i = 1;
+            }
+
+        } else if (n == 4) {
+            ShotEntity shot = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 10, ship.getY() - 30);
+            entities.add(shot);
+
+            ShotEntity shot1 = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 10, ship.getY() - 50);
+            entities.add(shot1);
+
+            //ShotEntity shot2 = new ShotEntity(this, "sprites/shot.gif", ship.getX() +10, ship.getY() - 50);
+            //entities.add(shot2);
+
+        } else {
+            ShotEntity shot = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 10, ship.getY() - 30);
+            entities.add(shot);
+        }
+
+    }
+
 
     /**
      * The main game loop. This loop is running during all game
@@ -438,22 +481,6 @@ public class Game extends Canvas {
         //gameSound.soundPlay("bgm/bg.wav", true);
 
         // keep looping round til the game ends
-        if (change1) {
-            entities.remove(ship);
-            ship = new ShipEntity(this, "sprites/character1.jpg", 370, 550);
-            entities.add(ship);
-        }
-        if (change2) {
-            entities.remove(ship);
-            ship = new ShipEntity(this, "sprites/character2.png", 370, 550);
-            entities.add(ship);
-        }
-        if (change3) {
-            entities.remove(ship);
-            ship = new ShipEntity(this, "sprites/character3.png", 370, 550);
-            entities.add(ship);
-        }
-
 
         long a = 0;
 
@@ -643,6 +670,7 @@ public class Game extends Canvas {
 
             if (e.getKeyCode() == KeyEvent.VK_M) {
                 System.out.println("\n m 눌림");
+                waitingForKeyPress = true;
                 container.dispose();
                 new Menu();
                 setVisible(false);

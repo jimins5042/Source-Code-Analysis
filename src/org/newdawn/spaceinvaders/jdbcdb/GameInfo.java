@@ -2,6 +2,10 @@ package org.newdawn.spaceinvaders.jdbcdb;
 
 public class GameInfo {
 
+    public GameInfo(){
+
+    }
+
     private static int playTime = 0;
     private static int stage = 0;
     private static int killCount = 0;
@@ -51,12 +55,12 @@ public class GameInfo {
         GameInfo.killCount = killCount;
     }
 
-    public GameInfo(){
 
-    }
-   public GameInfo(int playTime, int killCount, int score){
+
+   public GameInfo(int playTime, int killCount,int stage, int score){
         this.playTime = playTime;
         this.killCount = killCount;
+        this.stage = stage;
         this.score = score;
 
     }

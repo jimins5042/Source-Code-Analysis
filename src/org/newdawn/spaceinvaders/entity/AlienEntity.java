@@ -1,10 +1,10 @@
 package org.newdawn.spaceinvaders.entity;
 
-import org.newdawn.spaceinvaders.Game;
+import org.newdawn.spaceinvaders.main.Game;
 import org.newdawn.spaceinvaders.Sprite;
 import org.newdawn.spaceinvaders.SpriteStore;
-import org.newdawn.spaceinvaders.TwoPlayer;
-import org.newdawn.spaceinvaders.stage.StageLevel;
+import org.newdawn.spaceinvaders.main.TwoPlayer;
+import org.newdawn.spaceinvaders.stage.SettingValue;
 
 /**
  * An entity which represents one of our space invader aliens.
@@ -176,7 +176,7 @@ public class AlienEntity extends Entity {
 	 * Update the game logic related to aliens
 	 */
 	public void doLogic(int currentLevel) {
-		StageLevel level = new StageLevel();
+		SettingValue level = new SettingValue();
 		// swap over horizontal movement and move down the
 		// screen a bit
 		dx = -dx;

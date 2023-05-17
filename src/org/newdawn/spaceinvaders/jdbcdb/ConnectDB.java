@@ -1,13 +1,11 @@
 package org.newdawn.spaceinvaders.jdbcdb;
 
 import org.newdawn.spaceinvaders.login.Member;
-import org.newdawn.spaceinvaders.stage.StageLevel;
+import org.newdawn.spaceinvaders.stage.SettingValue;
 import org.newdawn.spaceinvaders.stage.shop.Coin;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ConnectDB {
 
@@ -18,9 +16,11 @@ public class ConnectDB {
 
     Coin c = new Coin();
     Member member = new Member();
-    StageLevel level = new StageLevel();
+    SettingValue value = new SettingValue();
 
     GameInfo info = new GameInfo();
+
+    SendGameInfo sendInfo = new SendGameInfo();
 
     public void setConnection() {
         String url = "jdbc:mysql://localhost:3306/invader";
@@ -45,7 +45,7 @@ public class ConnectDB {
             String sql = "insert into invader(play_time, stage, kill_count, play_score, coin, name, password) values (?,?,?, ?,?, ?, ?)";
 
             int play_time = info.getPlayTime();
-            int stage = level.getCurrentLevel();
+            int stage = value.getCurrentLevel();
             int kill_count = info.getKillCount();
             int play_score = info.getScore();
             int coin = c.getCoin();
@@ -76,7 +76,7 @@ public class ConnectDB {
             String sql = "update invader set play_time = ?, stage = ?, kill_count = ?, play_score = ? ,coin =? where name =? and password = ? ORDER BY ID DESC LIMIT 1";
 
             int play_time = info.getPlayTime();
-            int stage = level.getCurrentLevel();
+            int stage = value.getCurrentLevel();
             int kill_count = info.getKillCount();
             int play_score = info.getScore();
             int coin = c.getCoin();
@@ -245,6 +245,7 @@ public class ConnectDB {
         return inputPs;
     }
 
+    //가입자 목록 반환
     public ArrayList<Member> memberList() {
 
         ArrayList<Member> arr = new ArrayList<Member>();
@@ -271,5 +272,35 @@ public class ConnectDB {
             e.printStackTrace();
         }
         return arr;
+    }
+
+    public ArrayList<SendGameInfo> playRecordList() {
+
+        ArrayList<SendGameInfo> record = new ArrayList<SendGameInfo>();
+        System.out.println(record);
+        try {
+            // 쿼리문을 db에 넘김, 온전한 문자열 대입
+
+            stmt = con.createStatement();
+            String sql = "SELECT * FROM invader WHERE name = '" + member.getLoginName() + "' ORDER BY id DESC";
+            rs = stmt.executeQuery(sql);
+
+
+            // public GameInfo(int playTime, int killCount,int stage, int score){
+            // 받은 결과값을 출력
+            while (rs.next()) {
+                record.add(new SendGameInfo(rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5)));
+                System.out.printf("playRecordList -> playTime : %d, killCount : %d , stage : %d, score : %d  \n",
+                        rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5) );
+            }
+            System.out.println("쿼리성공_playRecordList");
+            rs.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("쿼리실패_playRecordList");
+            e.printStackTrace();
+        }
+        return record;
     }
 }

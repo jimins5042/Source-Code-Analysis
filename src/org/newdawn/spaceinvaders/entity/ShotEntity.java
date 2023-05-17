@@ -1,7 +1,7 @@
 package org.newdawn.spaceinvaders.entity;
 
-import org.newdawn.spaceinvaders.Game;
-import org.newdawn.spaceinvaders.TwoPlayer;
+import org.newdawn.spaceinvaders.main.Game;
+import org.newdawn.spaceinvaders.main.TwoPlayer;
 
 /**
  * An entity representing a shot fired by the player's ship
