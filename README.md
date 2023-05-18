@@ -62,6 +62,9 @@
 - Challage.isSafity()를 통해 조건 만족시 화면에 3초간 표시\
   -> 되야 하는데 적을 처치하면 바로 사라짐. 왜지
 - 적처치, 타임어택, 아이템 
+- DB 'challenge 생성' 
+- 도전과제에 관련된 모든 정보를 db에 저장
+- 쿼리를 통해 그중 최고 수치만 뽑아내어 도전과제 화면에 표시
 
 ## DB
 - setConnection() : DB 연결
@@ -78,3 +81,40 @@
 
 ## 기타
 - 화면 레이아웃 변경, listener 적극 사용
+
+## sql
+~~~
+create table invader
+(
+id         int auto_increment
+primary key,
+play_time  int         null,
+stage      int         null,
+kill_count int         null,
+play_score int         null,
+coin       int         null,
+name       varchar(30) null,
+password   varchar(30) null
+);
+
+
+
+create table memberlist
+(
+mId      int auto_increment
+primary key,
+name     varchar(30) null,
+password varchar(30) null
+
+);
+
+create table challenge
+(
+cId      int auto_increment
+primary key,
+name     varchar(30) null,
+remove   int         null,
+time_atk int         null,
+no_item  int         null
+);
+~~~
