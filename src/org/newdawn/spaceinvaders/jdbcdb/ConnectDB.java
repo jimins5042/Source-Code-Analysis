@@ -342,7 +342,7 @@ public class ConnectDB {
         try {
 
             stmt = con.createStatement();
-            String sql = "select remove from challenge ORDER BY remove desc limit 1";
+            String sql = "select remove from challenge WHERE name = '" + member.getLoginName() + "' ORDER BY remove desc limit 1";
             psmt = con.prepareStatement(sql);
             rs = psmt.executeQuery(sql);
             //psmt = con.prepareStatement(sql);
@@ -351,13 +351,13 @@ public class ConnectDB {
                  remove = rs.getInt("remove");
             }
 
-             sql = "select time_atk from challenge ORDER BY time_atk desc limit 1";
+             sql = "select time_atk from challenge WHERE name = '" + member.getLoginName() + "' ORDER BY time_atk desc limit 1";
             rs = psmt.executeQuery(sql);
             while (rs.next()) {
                  timeAtk = rs.getInt("time_atk");
             }
 
-             sql = "select no_item from challenge ORDER BY no_item desc limit 1";
+             sql = "select no_item from challenge WHERE name = '" + member.getLoginName() + "' ORDER BY no_item desc limit 1";
             rs = psmt.executeQuery(sql);
             while (rs.next()) {
                  noItem = rs.getInt("no_item");

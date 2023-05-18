@@ -366,7 +366,9 @@ public class Game extends Canvas {
             db.updateResult();
             db.currentRecord();
         }
+        c.isSatisfy((currentLevel + 1), info.getPlayTime());
         db.insertChallenge();   //도전과제 관련 로직
+
         System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s",
                 info.getPlayTime(), info.getStage(),
                 info.getKillCount(), coin.getCoin(),
@@ -644,6 +646,7 @@ public class Game extends Canvas {
 
                 //도전과제 표시 메시지
                 String message2 = c.isSatisfy((currentLevel + 1), info.getPlayTime());
+
                 g.setColor(Color.white);
                 g.drawString(message2, (800 - g.getFontMetrics().stringWidth(message2)) / 2, 450);
 
