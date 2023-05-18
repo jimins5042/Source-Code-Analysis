@@ -1,6 +1,8 @@
 package org.newdawn.spaceinvaders.jdbcdb;
 
 import org.newdawn.spaceinvaders.login.Member;
+import org.newdawn.spaceinvaders.login.challenge.ChallengeRepository;
+import org.newdawn.spaceinvaders.login.challenge.CheckChallengeRepository;
 import org.newdawn.spaceinvaders.stage.SettingValue;
 import org.newdawn.spaceinvaders.stage.shop.Coin;
 
@@ -206,6 +208,7 @@ public class ConnectDB {
             psmt = con.prepareStatement(sql);
             psmt.setString(1, name);
             psmt.setString(2, password);
+
             psmt.executeUpdate();
 
             System.out.println("쿼리성공_saveMember");
@@ -291,7 +294,7 @@ public class ConnectDB {
             while (rs.next()) {
                 record.add(new SendGameInfo(rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5)));
                 System.out.printf("playRecordList -> playTime : %d, killCount : %d , stage : %d, score : %d  \n",
-                        rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5) );
+                        rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5));
             }
             System.out.println("쿼리성공_playRecordList");
             rs.close();
@@ -303,4 +306,74 @@ public class ConnectDB {
         }
         return record;
     }
+
+    public void insertChallenge() {
+
+        try {
+            String sql = "insert into challenge(name, remove, time_atk, no_item) values (?,?, ?, ?)";
+
+            int remove = ChallengeRepository.getC_remove();
+            int time_atk = ChallengeRepository.getC_timeAtk();
+            int no_item = ChallengeRepository.getC_noItem();
+
+            String name = member.getLoginName();
+
+
+            psmt = con.prepareStatement(sql);
+            psmt.setString(1, name);
+            psmt.setInt(2, remove);
+            psmt.setInt(3, time_atk);
+            psmt.setInt(4, no_item);
+            psmt.executeUpdate();
+            System.out.println("remove : " + remove+  " time_atk + " + time_atk + " no_item + " + no_item);
+            System.out.println("쿼리성공_insertChallenge");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("쿼리실패_insertChallenge");
+        }
+    }
+
+    public CheckChallengeRepository checkChallenge() {
+        int remove = 0;
+        int timeAtk= 0;
+        int noItem= 0;
+
+        try {
+
+            stmt = con.createStatement();
+            String sql = "select remove from challenge ORDER BY remove desc limit 1";
+            psmt = con.prepareStatement(sql);
+            rs = psmt.executeQuery(sql);
+            //psmt = con.prepareStatement(sql);
+
+            while (rs.next()) {
+                 remove = rs.getInt("remove");
+            }
+
+             sql = "select time_atk from challenge ORDER BY time_atk desc limit 1";
+            rs = psmt.executeQuery(sql);
+            while (rs.next()) {
+                 timeAtk = rs.getInt("time_atk");
+            }
+
+             sql = "select no_item from challenge ORDER BY no_item desc limit 1";
+            rs = psmt.executeQuery(sql);
+            while (rs.next()) {
+                 noItem = rs.getInt("no_item");
+            }
+            System.out.println("remove"+ remove +" timeAtk" + timeAtk + "noItem"+ noItem);
+
+            System.out.println("쿼리성공_currentRecord");
+            rs.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("쿼리실패_currentRecord");
+            throw new RuntimeException(e);
+        }
+        return new CheckChallengeRepository(remove, timeAtk, noItem);
+    }
+
+
 }

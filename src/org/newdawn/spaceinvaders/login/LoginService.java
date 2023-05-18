@@ -4,6 +4,7 @@ import org.newdawn.spaceinvaders.login.challenge.ChallengeRepository;
 import org.newdawn.spaceinvaders.jdbcdb.ConnectDB;
 import org.newdawn.spaceinvaders.jdbcdb.GameInfo;
 import org.newdawn.spaceinvaders.jdbcdb.SendGameInfo;
+import org.newdawn.spaceinvaders.login.challenge.CheckChallengeRepository;
 import org.newdawn.spaceinvaders.main.Game;
 import org.newdawn.spaceinvaders.main.Menu;
 import org.newdawn.spaceinvaders.stage.SettingValue;
@@ -325,9 +326,11 @@ public class LoginService extends JFrame {
 
         }
     }
+
     class ChallengeListener implements ActionListener {
         JFrame frame;
         int rate = 0;
+        ConnectDB db = new ConnectDB();
 
         public ChallengeListener(JFrame f) {
             frame = f;
@@ -336,8 +339,8 @@ public class LoginService extends JFrame {
         @Override
         public void actionPerformed(ActionEvent arg0) {
             //버튼을 누르면 이쪽으로 이동
-
-            ChallengeRepository cr = new ChallengeRepository();
+            db.setConnection();
+            CheckChallengeRepository cr = db.checkChallenge();
 
             JFrame frame = new JFrame();
             frame.setBounds(50, 50, 500, 330); // 전체 창 크기
@@ -357,65 +360,78 @@ public class LoginService extends JFrame {
 
 
             //long C_remove, long C_timeAtk, long C_noItem
-            switch (cr.getC_remove()){
-                case 1:{
-                    remove = new JLabel("적 처치 10마리 달성!");
+            switch (cr.getChk_remove()) {
+                case 1: {
+                    remove = new JLabel("도전과제 달성! 적 10마리 처치");
                     rate += 10;
-                }break;
-                case 2:{
-                    remove = new JLabel("적 처치 50마리 달성!");
+                }
+                break;
+                case 2: {
+                    remove = new JLabel("도전과제 달성! 적 50마리 처치");
                     rate += 20;
-                }break;
-                case 3:{
-                    remove = new JLabel("적 처치 100마리 달성!");
+                }
+                break;
+                case 3: {
+                    remove = new JLabel("도전과제 달성! 적 100마리 처치");
                     rate += 30;
-                }break;
-                case 4:{
-                    remove = new JLabel("적 처치 500마리 달성!");
+                }
+                break;
+                case 4: {
+                    remove = new JLabel("도전과제 달성! 적 500마리 처치");
                     rate += 40;
-                }break;
+                }
+                break;
 
-                default:{
+                default: {
                     remove = new JLabel("적 처치 도전과제 미달성");
-                }break;
+                }
+                break;
             }
 
 
-            switch (cr.getC_timeAtk()){
-                case 1:{
+            switch (cr.getChk_timeAtk()) {
+                case 1: {
                     timeAtk = new JLabel("도전과제 달성! = 60초 안에 스테이지 3 클리어");
                     rate += 10;
-                }break;
-                case 2:{
+                }
+                break;
+                case 2: {
                     timeAtk = new JLabel("도전과제 달성! = 100초 안에 스테이지 5 클리어");
                     rate += 20;
-                }break;
-                case 3:{
+                }
+                break;
+                case 3: {
                     timeAtk = new JLabel("도전과제 달성! = 140초 안에 스테이지 7 클리어");
                     rate += 30;
-                }break;
-                default:{
+                }
+                break;
+                default: {
                     timeAtk = new JLabel("타임어택 도전과제 미달성");
-                }break;
+                }
+                break;
             }
 
 
-            switch (cr.getC_noItem()){
-                case 1:{
-                    noItem = new JLabel("도전과제 달성! = 상점 미사용하고 스테이지 4 클리어 ");
+            switch (cr.getChk_noItem()) {
+                case 1: {
+                    noItem = new JLabel("도전과제 달성! 상점 미사용하고 스테이지 4 클리어 ");
                     rate += 10;
-                }break;
-                case 2:{
-                    noItem = new JLabel("도전과제 달성! = 상점 미사용하고 스테이지 8 클리어 ");
+                }
+                break;
+                case 2: {
+                    noItem = new JLabel("도전과제 달성! 상점 미사용하고 스테이지 8 클리어 ");
                     rate += 20;
-                }break;
-                case 3:{
-                    noItem = new JLabel("도전과제 달성! = 상점 미사용하고 스테이지 12 클리어 ");
+                }
+                break;
+                case 3: {
+                    noItem = new JLabel("도전과제 달성! 상점 미사용하고 스테이지 12 클리어 ");
                     rate += 30;
-                }break;
-                default:{
+                }
+                break;
+                default: {
                     noItem = new JLabel("상점 미사용 도전과제 미달성");
-                }break;
+                }
+                break;
             }
 
             JLabel title = new JLabel("도전과제 목록");
