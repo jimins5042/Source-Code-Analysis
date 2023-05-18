@@ -506,7 +506,6 @@ public class Game extends Canvas {
     long sumTime = info.getPlayTime();
     int a = 0;
 
-
     public void gameLoop() {
         long lastLoopTime = SystemTimer.getTime();
         //gameSound.soundPlay("bgm/bg.wav", true);
@@ -551,27 +550,17 @@ public class Game extends Canvas {
                 도전과제 출력 로직
                 조건 만족시 오른쪽 상단에 3초간 출력 -> 안되는 중
                  */
-                String messageName = c.isSatisfy(killAlien);
-                g.drawString(messageName, 500, 60);
-
-/*
+                String messageName = "";
                 if (c.isSatisfy(killAlien) != null) {
-                    safity = true;
-                    
-                    messageName = c.isSatisfy(killAlien);
+                    a = 0;
+
                 }
-
-                System.out.println("messageName = " + messageName);
-
                 a += delta;
-                if(safity){
-                    if((a/1000) % 2 ==0){
-                        g.drawString(messageName, 500, 60);
-                    }else{
-                        g.drawString("", 500, 60);
-                    }
+                if ((a / 1000) < 3) {
+                    messageName = c.isSatisfy(killAlien);
+                    g.setColor(Color.white);
+                    g.drawString(messageName, 500, 60);
                 }
- */
 
 
                 g.setColor(Color.white);
