@@ -110,12 +110,19 @@ public class MemberService extends JFrame {
                 2. 아이디는 이미 존재하지 않는가?
                 3.
              */
+<<<<<<< HEAD
             String name = id.getText();
             String ps = password.getText();
 
             if (name.equals("")) {
                 JOptionPane.showMessageDialog(frame, "아이디는 비어있을 수 없습니다.");
             } else if (ps.equals("")) {
+=======
+
+            if (id.getText() == null) {
+                JOptionPane.showMessageDialog(frame, "아이디는 비어있을 수 없습니다.");
+            } else if (password.getText() == null) {
+>>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
                 JOptionPane.showMessageDialog(frame, "비밀번호는 비어있을 수 없습니다.");
             } else if (db.checkPassword(id.getText()) != "") {
                 JOptionPane.showMessageDialog(frame, "이미 존재하는 아이디 입니다.");

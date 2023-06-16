@@ -2,11 +2,19 @@
   <library name="lib">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/mysql-connector-j-8.0.33.jar!/" />
+<<<<<<< HEAD
       <root url="jar://$PROJECT_DIR$/lib/gagetimer.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/ojdbc14.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/mybatis-3.5.13.jar!/" />
     </CLASSES>
     <JAVADOC />
+=======
+    </CLASSES>
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/lib" />
+    </NATIVE>
+>>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
     <SOURCES />
   </library>
 </component>

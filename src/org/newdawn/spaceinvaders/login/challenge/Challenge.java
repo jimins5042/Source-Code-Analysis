@@ -36,6 +36,7 @@ public class Challenge {
     public String isSatisfy(int stage, int time) {
 
         //2번 도전과제 - 특정 시간 안에 특정 스테이지 도달
+<<<<<<< HEAD
         if (stage == 4 && time < 70) {
             cr.setC_timeAtk(1);
             return "도전과제 달성! = 70초 안에 스테이지 3 클리어 =";
@@ -49,6 +50,21 @@ public class Challenge {
         if (stage == 8 && time < 200) {
             cr.setC_timeAtk(3);
             return "도전과제 달성! = 200초 안에 스테이지 7 클리어 =";
+=======
+        if (stage == 4 && time < 60) {
+            cr.setC_timeAtk(1);
+            return "도전과제 달성! = 60초 안에 스테이지 3 클리어 =";
+        }
+
+        if (stage == 6 && time < 100) {
+            cr.setC_timeAtk(2);
+            return "도전과제 달성! = 100초 안에 스테이지 5 클리어 =";
+        }
+
+        if (stage == 8 && time < 140) {
+            cr.setC_timeAtk(3);
+            return "도전과제 달성! = 140초 안에 스테이지 7 클리어 =";
+>>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
         }
 
         //3번 도전과제 - 상점 미사용 + 특정 스테이지 클리어
