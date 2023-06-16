@@ -7,13 +7,10 @@ import org.newdawn.spaceinvaders.main.TwoPlayer;
 import org.newdawn.spaceinvaders.stage.SettingValue;
 
 /**
-<<<<<<< HEAD
  * !!!!!!!!move,doLogic,collidesWith 함수 재정의!!!!!!!!!!!
  */
 
 /**
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
  * An entity which represents one of our space invader aliens.
  * 
  * @author Kevin Glass
@@ -105,11 +102,7 @@ public class AlienEntity extends Entity {
 		// proceed with normal move
 		super.move(delta);
 	}
-<<<<<<< HEAD
 	public void move(long delta, int player) {
-=======
-	public void move1(long delta) {
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 		// since the move tells us how much time has passed
 		// by we can use it to drive the animation, however
 		// its the not the prettiest solution
@@ -129,7 +122,6 @@ public class AlienEntity extends Entity {
 
 			sprite = frames[frameNumber];
 		}
-<<<<<<< HEAD
 		if(player==1)
 		{
 			if ((dx < 0) && (x < 10)) {
@@ -152,68 +144,14 @@ public class AlienEntity extends Entity {
 				twoPlayer.updateLogic(player);
 			}
 		}
-=======
-
-		if ((dx < 0) && (x < 10)) {
-			twoPlayer.updateLogic1();
-		}
-		// and vice vesa, if we have reached the right hand side of
-		// the screen and are moving right, request a logic update
-		if ((dx > 0) && (x > 350)) {
-			twoPlayer.updateLogic1();
-		}
-
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 		// if we have reached the left hand side of the screen and
 		// are moving left then request a logic update
 
 
 		// proceed with normal move
-<<<<<<< HEAD
 		super.move(delta,player);
 	}
 
-=======
-		super.move1(delta);
-	}
-	public void move2(long delta) {
-		// since the move tells us how much time has passed
-		// by we can use it to drive the animation, however
-		// its the not the prettiest solution
-		lastFrameChange += delta;
-
-		// if we need to change the frame, update the frame number
-		// and flip over the sprite in use
-		if (lastFrameChange > frameDuration) {
-			// reset our frame change time counter
-			lastFrameChange = 0;
-
-			// update the frame
-			frameNumber++;
-			if (frameNumber >= frames.length) {
-				frameNumber = 0;
-			}
-
-			sprite = frames[frameNumber];
-		}
-
-		if ((dx < 0) && (x < 410)) {
-			twoPlayer.updateLogic2();
-		}
-		// and vice vesa, if we have reached the right hand side of
-		// the screen and are moving right, request a logic update
-		if ((dx > 0) && (x > 750)) {
-			twoPlayer.updateLogic2();
-		}
-
-		// if we have reached the left hand side of the screen and
-		// are moving left then request a logic update
-
-
-		// proceed with normal move
-		super.move2(delta);
-	}
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 	/**
 	 * Update the game logic related to aliens
 	 */
@@ -231,11 +169,7 @@ public class AlienEntity extends Entity {
 			game.notifyDeath();
 		}
 	}
-<<<<<<< HEAD
 	public void doLogic() {
-=======
-	public void doLogic1() {
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 		// swap over horizontal movement and move down the
 		// screen a bit
 		dx = -dx;
@@ -244,29 +178,10 @@ public class AlienEntity extends Entity {
 		// if we've reached the bottom of the screen then the player
 		// dies
 		if (y > 570) {
-<<<<<<< HEAD
 			twoPlayer.notifyEnd();
 		}
 	}
 
-=======
-			twoPlayer.notifyWin2();
-		}
-	}
-
-	public void doLogic2() {
-		// swap over horizontal movement and move down the
-		// screen a bit
-		dx = -dx;
-		y += 10;
-
-		// if we've reached the bottom of the screen then the player
-		// dies
-		if (y > 570) {
-			twoPlayer.notifyWin1();
-		}
-	}
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 	/**
 	 * Notification that this alien has collided with another entity
 	 * 
@@ -275,17 +190,8 @@ public class AlienEntity extends Entity {
 	public void collidedWith(Entity other) {
 		// collisions with aliens are handled elsewhere
 	}
-<<<<<<< HEAD
 	public void collidedWith(Entity other,int player) {
 		// collisions with aliens are handled elsewhere
 	}
 
-=======
-	public void collidedWith1(Entity other) {
-		// collisions with aliens are handled elsewhere
-	}
-	public void collidedWith2(Entity other) {
-		// collisions with aliens are handled elsewhere
-	}
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 }

@@ -47,11 +47,7 @@ public class Shop extends JFrame {
 
         // 공격속도 증가버튼
         attackSpeedInhenceButton = new JButton("공격속도 증가 : 5원");
-<<<<<<< HEAD
         attackSpeedInhenceButton.setPreferredSize(new Dimension(210, 50)); // 버튼의 크기 설정
-=======
-        attackSpeedInhenceButton.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
         attackSpeedInhenceButton.addActionListener(e -> {
 
             shopService.Increase();
@@ -66,11 +62,7 @@ public class Shop extends JFrame {
 
         // 적 하강속도 감소버튼
         alienSpeedDecreaseButton = new JButton("적 하강속도 감소 : 10원");
-<<<<<<< HEAD
         alienSpeedDecreaseButton.setPreferredSize(new Dimension(210, 50)); // 버튼의 크기 설정
-=======
-        alienSpeedDecreaseButton.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
         alienSpeedDecreaseButton.addActionListener(e -> {
             shopService.Decrease();
@@ -84,11 +76,7 @@ public class Shop extends JFrame {
         gbc.gridy++; // Y 좌표 증가
 
         JButton init = new JButton("능력치 초기화");
-<<<<<<< HEAD
         init.setPreferredSize(new Dimension(210, 50)); // 버튼의 크기 설정
-=======
-        init.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
         init.addActionListener(e -> {
             SettingValue.setChangeInterval(1);
@@ -107,11 +95,7 @@ public class Shop extends JFrame {
         // exit
 
         goMenu = new JButton("나가기");
-<<<<<<< HEAD
         goMenu.setPreferredSize(new Dimension(210, 50)); // 버튼의 크기 설정
-=======
-        goMenu.setPreferredSize(new Dimension(200, 50)); // 버튼의 크기 설정
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
         goMenu.addActionListener(e -> {
             frame.dispose();

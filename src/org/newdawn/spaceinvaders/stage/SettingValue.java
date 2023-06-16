@@ -8,10 +8,6 @@ public class SettingValue {
     }
 
     //등장하는 적의 수 조절
-<<<<<<< HEAD
-=======
-    private int level[] = {1, 2, 1, 2, 1};
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
     private static float changeFiringInterval = 500;
 
 
@@ -24,10 +20,7 @@ public class SettingValue {
     private static float slowInvaderSpeed = 1L;
 
     private static int changeShip = 1;
-<<<<<<< HEAD
     private static int changeShip2 = 1;
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
     public SettingValue(float changeInterval, float AlienY, float slowInvaderSpeed) {
 
@@ -46,12 +39,6 @@ public class SettingValue {
     }
 
 
-<<<<<<< HEAD
-=======
-    public void setLevel(int[] level) {
-        this.level = level;
-    }
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
     public static int getChangeShip() {
         return changeShip;
@@ -61,13 +48,6 @@ public class SettingValue {
         SettingValue.changeShip = changeShip;
     }
 
-<<<<<<< HEAD
-=======
-    public int[] getLevel() {
-        return level;
-    }
-
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
     //적 하강속도 비율
     public static float getSlowInvaderSpeed() {
         return slowInvaderSpeed;
@@ -85,7 +65,6 @@ public class SettingValue {
         SettingValue.changeFiringInterval = changeFiringInterval;
     }
 
-<<<<<<< HEAD
     public static int getChangeShip2() {
         return changeShip2;
     }
@@ -94,8 +73,6 @@ public class SettingValue {
         SettingValue.changeShip2 = changeShip2;
     }
 
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
     public static float getAlienY() {
         return AlienY;
     }

@@ -4,13 +4,10 @@ import org.newdawn.spaceinvaders.main.Game;
 import org.newdawn.spaceinvaders.main.TwoPlayer;
 
 /**
-<<<<<<< HEAD
  * !!!!!!!!move, collidesWith 함수 재정의!!!!!!!!!!!
  */
 
 /**
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
  * An entity representing a shot fired by the player's ship
  * 
  * @author Kevin Glass
@@ -64,14 +61,9 @@ public class ShotEntity extends Entity {
 		}
 	}
 
-<<<<<<< HEAD
 	public void move(long delta,int player) {
 		// proceed with normal move
 		super.move(delta,player);
-=======
-	public void move1(long delta) {
-		// proceed with normal move
-		super.move1(delta);
 
 		// if we shot off the screen, remove ourselfs
 		if (y < -100) {
@@ -79,21 +71,6 @@ public class ShotEntity extends Entity {
 		}
 	}
 
-	public void move2(long delta) {
-		// proceed with normal move
-		super.move2(delta);
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
-
-		// if we shot off the screen, remove ourselfs
-		if (y < -100) {
-			twoPlayer.removeEntity(this);
-		}
-	}
-
-<<<<<<< HEAD
-=======
-
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 	/**
 	 * Notification that this shot has collided with another
 	 * entity
@@ -118,11 +95,7 @@ public class ShotEntity extends Entity {
 			used = true;
 		}
 	}
-<<<<<<< HEAD
 	public void collidedWith(Entity other, int player) {
-=======
-	public void collidedWith1(Entity other) {
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 		// prevents double kills, if we've already hit something,
 		// don't collide
 		if (used) {
@@ -136,34 +109,9 @@ public class ShotEntity extends Entity {
 			twoPlayer.removeEntity(other);
 
 			// notify the game that the alien has been killed
-<<<<<<< HEAD
 			twoPlayer.notifyAlienKilled(player);
 			used = true;
 		}
 	}
 
-=======
-			twoPlayer.notifyAlienKilled1();
-			used = true;
-		}
-	}
-	public void collidedWith2(Entity other) {
-		// prevents double kills, if we've already hit something,
-		// don't collide
-		if (used) {
-			return;
-		}
-
-		// if we've hit an alien, kill it!
-		if (other instanceof AlienEntity) {
-			// remove the affected entities
-			twoPlayer.removeEntity(this);
-			twoPlayer.removeEntity(other);
-
-			// notify the game that the alien has been killed
-			twoPlayer.notifyAlienKilled2();
-			used = true;
-		}
-	}
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 }

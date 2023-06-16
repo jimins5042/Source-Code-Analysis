@@ -3,10 +3,7 @@ package org.newdawn.spaceinvaders.main;
 import org.newdawn.spaceinvaders.Sound;
 import org.newdawn.spaceinvaders.SystemTimer;
 import org.newdawn.spaceinvaders.entity.AlienEntity;
-<<<<<<< HEAD
 import org.newdawn.spaceinvaders.entity.MeteoEntity;
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 import org.newdawn.spaceinvaders.entity.Entity;
 import org.newdawn.spaceinvaders.entity.ShipEntity;
 import org.newdawn.spaceinvaders.entity.ShotEntity;
@@ -26,11 +23,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Random;
-<<<<<<< HEAD
 import java.util.Timer;
 import java.util.TimerTask;
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
 /**
  * The main hook of our game. This class with both act as a manager
@@ -89,11 +83,7 @@ public class Game extends Canvas {
      * The message to display which waiting for a key press
      */
     protected String message = "";
-<<<<<<< HEAD
     protected String message1 = "";
-=======
-    private String message1 = "";
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
     /**
      * True if we're holding up game play until a key has been pressed
      */
@@ -135,11 +125,7 @@ public class Game extends Canvas {
 
     //ConnectDB 인스턴스
     ConnectDB db = new ConnectDB();
-<<<<<<< HEAD
 
-=======
-    int level[] = value.getLevel();
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
     GameInfo info = new GameInfo();
     private int currentLevel = info.getStage();
     protected Sound gameSound = new Sound();
@@ -148,7 +134,6 @@ public class Game extends Canvas {
 
     Challenge c = new Challenge();
 
-<<<<<<< HEAD
     Random random = new Random();
 
     long currentTime = System.currentTimeMillis();
@@ -157,10 +142,6 @@ public class Game extends Canvas {
     private MeteoTask meteoTask;
     private int meteoInitialDelay = 1000;
     Font myFont1 = new Font("둥근모꼴", Font.PLAIN, 13);
-=======
-
-    Random random = new Random();
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
 
     /**
@@ -188,10 +169,7 @@ public class Game extends Canvas {
         container.pack();
         container.setResizable(false);
         container.setVisible(true);
-<<<<<<< HEAD
         container.setLocationRelativeTo(null);
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
         // add a listener to respond to the user closing the window. If they
         // do we'd like to exit the game
@@ -269,35 +247,7 @@ public class Game extends Canvas {
             }
             break;
         }
-<<<<<<< HEAD
 
-=======
-/*
-        //탱크
-        if (value.getChangeShip() == 2) {
-            ship = new ShipEntity(this, "sprites/character1.jpg", 370, 550);
-            shotInterval = 800;
-            entities.add(ship);
-
-            //전투기
-        } else if (value.getChangeShip() == 3) {
-            ship = new ShipEntity(this, "sprites/character2.png", 370, 550);
-            shotInterval = 450;
-            entities.add(ship);
-
-            //로켓
-        } else if (value.getChangeShip() == 4) {
-            ship = new ShipEntity(this, "sprites/character3.png", 370, 550);
-            shotInterval = 900;
-            entities.add(ship);
-        } else {
-            ship = new ShipEntity(this, "sprites/ship.gif", 370, 550);
-            shotInterval = 500;
-            entities.add(ship);
-        }
-
- */
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
         // create a block of aliens (5 rows, by 12 aliens, spaced evenly)
         alienCount = 0;
         //매 스테이지마다 적의 수 변경
@@ -308,7 +258,6 @@ public class Game extends Canvas {
                 alienCount++;
             }
         }
-<<<<<<< HEAD
 
         // Add the initial MeteoEntity object
         if (meteoTimer == null) {
@@ -328,8 +277,6 @@ public class Game extends Canvas {
         public void run() {
             addMeteoEntity();
         }
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
     }
 
     /**
@@ -365,11 +312,7 @@ public class Game extends Canvas {
         SettingValue.setChangeInterval(1);
         SettingValue.setSlowInvaderSpeed(1);
 
-<<<<<<< HEAD
         System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s \n",
-=======
-        System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s",
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
                 info.getPlayTime(), info.getStage(),
                 info.getKillCount(), coin.getCoin(),
                 member.getLoginName(), member.getLoginPassword());
@@ -385,11 +328,7 @@ public class Game extends Canvas {
                         "\n" +
                         "총 플레이 시간: " + info.getPlayTime() + " 스테이지 : " + info.getStage()
                         + " 킬카운트 : " + info.getKillCount() +
-<<<<<<< HEAD
                         "\n  점수 : " + info.getScore() + " 최고점수 : " + best);
-=======
-                        "\n  점수 : " + coin.getCoin() + " 최고점수 : " + best);
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
         container.dispose();
         new Menu();
@@ -419,16 +358,10 @@ public class Game extends Canvas {
         sumTime = (sum / 1000) + sumTime;
         info.setPlayTime((int) sumTime);
         info.setKillCount(killAlien);
-<<<<<<< HEAD
 
         int score = (info.getKillCount() * currentLevel) * 1000 / info.getPlayTime();
         info.setScore(score + coin.getCoin());
         System.out.println("score = " + score);
-=======
-        //스테이지는 SettingValue.getCurrentLevel 에서 관리
-
-        info.setScore((info.getKillCount() * currentLevel) * 1000 / info.getPlayTime());
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
         if (currentLevel == 1) {
             db.setConnection();
@@ -442,11 +375,7 @@ public class Game extends Canvas {
         c.isSatisfy((currentLevel + 1), info.getPlayTime());
         db.insertChallenge();   //도전과제 관련 로직
 
-<<<<<<< HEAD
         System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s \n",
-=======
-        System.out.printf("시간: %d 스테이지 : %d 킬카운트 : %d 코인 : %d 이름 : %s 비밀번호 : %s",
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
                 info.getPlayTime(), info.getStage(),
                 info.getKillCount(), coin.getCoin(),
                 member.getLoginName(), member.getLoginPassword());
@@ -612,10 +541,7 @@ public class Game extends Canvas {
             // Get hold of a graphics context for the accelerated
             // surface and blank it out
             Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-<<<<<<< HEAD
             g.setFont(myFont1);
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
             g.setColor(Color.black);
             g.fillRect(0, 0, 800, 600);
 
@@ -643,10 +569,6 @@ public class Game extends Canvas {
                     g.drawString(messageName, 500, 60);
                 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
                 g.setColor(Color.white);
                 g.drawString(message, (800 - g.getFontMetrics().stringWidth(message)) / 16, 40);    //아무 버튼 누르기
                 g.drawString(tip, (800 - g.getFontMetrics().stringWidth(tip)) / 14, 60);    // m 누르는 그거
@@ -862,13 +784,9 @@ public class Game extends Canvas {
             // if we hit escape, then quit the game
             if (e.getKeyChar() == 27) {
                 System.exit(0);
-<<<<<<< HEAD
 
             }
 
-=======
-            }
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
         }
     }
 

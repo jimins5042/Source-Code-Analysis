@@ -43,18 +43,12 @@ public class LoginService extends JFrame {
         gbc.fill = GridBagConstraints.VERTICAL; // 수직으로 채우기
         gbc.insets = new Insets(10, 0, 10, 0); // 위, 오른쪽, 아래, 왼쪽 여백 설정
 
-<<<<<<< HEAD
 
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
         JPanel panel = new JPanel();
         BoxLayout boxLayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         panel.setLayout(boxLayout);
 
-<<<<<<< HEAD
 
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
         if (member.isLoginCookie()) {
 
             panel.add(Box.createVerticalStrut(150)); // 수직 간격 100픽셀
@@ -169,7 +163,6 @@ public class LoginService extends JFrame {
             //버튼을 누르면 이쪽으로 이동
             System.out.println(arg0.getActionCommand());
 
-<<<<<<< HEAD
 
             System.out.println("id: " + id.getText());
             System.out.println("password: " + password.getText());
@@ -216,60 +209,6 @@ public class LoginService extends JFrame {
             } else {
                 System.out.println("로그인 실패");
                 JOptionPane.showMessageDialog(frame, "로그인 실패 - 아이디나 비밀번호를 확인해주세요.");
-=======
-            if (member.isLoginCookie()) {
-                System.out.println("로그인 쿠키 : " + member.isLoginCookie());
-                JOptionPane.showMessageDialog(frame, "이미 로그인 되어 있습니다.");
-
-            } else if (id.getText() == null) {
-                JOptionPane.showMessageDialog(frame, "아이디는 비어있을 수 없습니다.");
-            } else {
-
-                System.out.println("id: " + id.getText());
-                System.out.println("password: " + password.getText());
-
-                //아이디를 통해 저장되어 있는 비밀번호를 찾은후, 입력 받은 비밀번호와 동일한지 확인
-                String checkPassword = memberRepository.findPassword(id.getText());
-                System.out.println("checkPassword = " + checkPassword);
-
-                if (checkPassword.equals(password.getText())) {
-                    System.out.println("로그인 성공");
-
-                    //로그인 쿠키  true로 설정
-                    member.setLoginCookie(true);
-                    //현재 로그인한 회원 정보 저장
-                    member.setLoginName(id.getText());
-                    member.setLoginPassword(password.getText());
-
-                    JOptionPane.showMessageDialog(frame, "로그인 성공 - 환영합니다, " + member.getLoginName() + "님.");
-
-                    //new game을 경유하여 로그인 요청이 들어온 경우
-                    if (member.isGameCookie()) {
-                        //new game 쿠키를 초기화
-                        member.setGameCookie(false);
-
-                        dispose();
-
-                        //게임 시작!
-                        Thread thread = new Thread(() -> {
-                            Game game = new Game();
-                            setVisible(false);
-                            game.gameLoop();
-                        });
-                        thread.start();
-
-                        //메뉴로 복귀
-                    } else {
-                        member.setGameCookie(false);
-                        dispose();
-                        new Menu();
-                        setVisible(false);
-                    }
-                } else {
-                    System.out.println("로그인 실패");
-                    JOptionPane.showMessageDialog(frame, "로그인 실패 - 아이디나 비밀번호를 확인해주세요.");
-                }
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
             }
         }
     }
@@ -409,20 +348,13 @@ public class LoginService extends JFrame {
 
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-<<<<<<< HEAD
             Font myFont1 = new Font("Noto Sans KR", Font.PLAIN, 15);
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
 
             JLabel remove;
             JLabel timeAtk;
             JLabel noItem;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
             //long C_remove, long C_timeAtk, long C_noItem
             switch (cr.getChk_remove()) {
                 case 1: {
@@ -455,29 +387,17 @@ public class LoginService extends JFrame {
 
             switch (cr.getChk_timeAtk()) {
                 case 1: {
-<<<<<<< HEAD
                     timeAtk = new JLabel("도전과제 달성! = 70초 안에 스테이지 3 클리어");
-=======
-                    timeAtk = new JLabel("도전과제 달성! = 60초 안에 스테이지 3 클리어");
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
                     rate += 10;
                 }
                 break;
                 case 2: {
-<<<<<<< HEAD
                     timeAtk = new JLabel("도전과제 달성! = 120초 안에 스테이지 5 클리어");
-=======
-                    timeAtk = new JLabel("도전과제 달성! = 100초 안에 스테이지 5 클리어");
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
                     rate += 20;
                 }
                 break;
                 case 3: {
-<<<<<<< HEAD
                     timeAtk = new JLabel("도전과제 달성! = 200초 안에 스테이지 7 클리어");
-=======
-                    timeAtk = new JLabel("도전과제 달성! = 140초 안에 스테이지 7 클리어");
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
                     rate += 30;
                 }
                 break;
@@ -509,23 +429,17 @@ public class LoginService extends JFrame {
                 }
                 break;
             }
-<<<<<<< HEAD
             remove.setFont(myFont1);
             timeAtk.setFont(myFont1);
             noItem.setFont(myFont1);
 
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
             JLabel title = new JLabel("도전과제 목록");
             JLabel memInfo = new JLabel(member.getLoginName() + "님의 도전과제 달성률 페이지 입니다.");
             JLabel rateInfo = new JLabel("도전과제 달성률 : " + rate + "%");
-<<<<<<< HEAD
             title.setFont(myFont1);
             memInfo.setFont(myFont1);
             rateInfo.setFont(myFont1);
-=======
->>>>>>> eaa63a266232f67b6f64d4d3e089eb4db0420952
 
             memInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
             title.setAlignmentX(Component.CENTER_ALIGNMENT);
