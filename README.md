@@ -27,6 +27,8 @@ ex) ‘도전과제’ 기능의 경우
 
 그러나 다른 프레임워크나 툴 없이 순수 java를 사용하여 개발을 진행했기 때문에  
 완벽한 MVC 패턴을 구현하는 데는 어려움이 있었다.
+
+[![Video Label](http://img.youtube.com/vi/jygAvHTMsHE/0.jpg)](https://youtu.be/jygAvHTMsHE)
  
 # 3. 구현 기능 소개
 
