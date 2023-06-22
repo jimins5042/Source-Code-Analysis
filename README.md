@@ -28,7 +28,11 @@ ex) ‘도전과제’ 기능의 경우
 그러나 다른 프레임워크나 툴 없이 순수 java를 사용하여 개발을 진행했기 때문에  
 완벽한 MVC 패턴을 구현하는 데는 어려움이 있었다.
 
+## 2.1 게임 실행 영상 
+
 [![Video Label](http://img.youtube.com/vi/jygAvHTMsHE/0.jpg)](https://youtu.be/jygAvHTMsHE)
+
+이미지를 클릭하면 유투브로 이동합니다.
  
 # 3. 구현 기능 소개
 
